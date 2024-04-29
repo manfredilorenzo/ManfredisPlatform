@@ -4,7 +4,7 @@ const http = require("http");
 const path = require("path");
 const app = express();
 const bodyParser = require("body-parser");
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const conf = require("./conf.js");
 const connection = mysql.createConnection(conf);
 
@@ -17,8 +17,8 @@ server.listen(80, () => {
     console.log("- server running");
 });
 //---------------------------------------------------------------------------------------------------
-
-//SERVIZIO DI LOGIN e di ACCESSO
+try{
+  //SERVIZIO DI LOGIN e di ACCESSO
 app.post("/accedi", (req, res) => {
     //preno credenziali da richiesta
     const username = req.body.username;
@@ -152,3 +152,7 @@ const ricercaAnnunci = (ricerca) => {
             });
     });
 };
+}catch(e){
+  console.log("Errore");
+  console.log(e);
+}
