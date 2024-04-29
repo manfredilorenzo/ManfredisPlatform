@@ -2,160 +2,285 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manfredi's Platform</title>
-    <link rel="icon" href="/public/assets/logo2.png">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+  <link href="assets/images/brand/logo2.png" rel="icon" />
+  <title>Manfredi's Platform</title>
+  <meta name="description" content="Your ThemeForest item Name and description">
+  <meta name="author" content="harnishdesign.net">
 
-    <style>
-        .mostra {
-            display: block;
-        }
-
-        .nascondi {
-            display: none;
-        }
-    </style>
-
+  <!-- Stylesheet
+    ============================== -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap/css/bootstrap.min.css" />
+  <!-- Font Awesome Icon -->
+  <link rel="stylesheet" type="text/css" href="assets/vendor/font-awesome/css/all.min.css" />
+  <!-- Magnific Popup -->
+  <link rel="stylesheet" type="text/css" href="assets/vendor/magnific-popup/magnific-popup.min.css" />
+  <!-- Highlight Syntax -->
+  <link rel="stylesheet" type="text/css" href="assets/vendor/highlight.js/styles/github.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css" />
 </head>
 
-<body class="bg-dark">
-    <marquee behavior="scroll" direction="right" style="color: white; " class="bg-secondary">Cerca tutto quello che ti
-        serve! Sostieni il pianeta.</marquee>
-    <div class="" style="margin-left: 20px; margin-right: 20px;">
-        <div class="row">
-            <div class="col-3">
-                <!-- Immagine sul bordo sinistro -->
-                <img src="./assets/logo1.png" width="500px">
-            </div>
-            <div class="col-9 d-flex justify-content-end align-items-center">
-                <!-- Bottone Bootstrap 1 -->
-                <button type="button" class="btn btn-success mr-2" id="btnAccedi"
-                    onclick="mostraAccedi()">Accedi</button>
-                <!-- Bottone Bootstrap 2 -->
-                <button type="button" class="btn btn-success" id="btnRegistrati"
-                    onclick="mostraRegistrati()">Registrati</button>
-            </div>
-        </div>
+<body data-spy="scroll" data-target=".idocs-navigation" data-offset="125">
 
-
-        <!--DIV accedi-->
-        <div class="container bg-white nascondi" style="width: 450px; height: 600px; border-radius: 15px;"
-            id="divAccedi">
-
-            <div class="justify-content-center text-center">
-                <p><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor"
-                        class="bi bi-person-circle mb-2 " viewBox="0 0 16 16" style="margin-top:50px">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                        <path fill-rule="evenodd"
-                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                    </svg></p>
-                <h3>Accedi al tuo Account</h3>
-
-            </div>
-
-            <div class="container" style="width: 80%;">
-                <label for="usernameAccedi" class="mt-3 text-left">Username <span style="color:red"
-                        data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                <input type="text" class="form-control" placeholder="" id="usernameAccedi">
-
-                <label for="passwordAccedi" class="mt-3 text-left">Password <span style="color:red"
-                        data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                <input type="password" id="passwordAccedi" class="form-control">
-
-                <button type="button" class="btn btn-primary btn-sm mb-2 mt-2" id="btnDivAccedi"
-                    style="width: 100%;">Accedi  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
-                      </svg></button>
-            </div>
-
-        </div>
-        <!--Fine DIV accedi-->
-
-        <!--DIV Registrati-->
-        <div class="container bg-white nascondi" style="width: 450px; height: 600px; border-radius: 15px;"
-            id="divRegistrati">
-
-
-            <div class="justify-content-center text-center">
-                <p><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor"
-                        class="bi bi-person-circle mb-2 " viewBox="0 0 16 16" style="margin-top:50px">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                        <path fill-rule="evenodd"
-                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                    </svg></p>
-                <h3>Registrati</h3>
-            </div>
-
-            <div class="container " style="width: 80%;">
-                <div class="row mb-3">
-                    <div class="col">
-                        <label for="nomeRegistrati" class="text-left">Nome <span style="color:red"
-                                data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                        <input type="text" class="form-control" placeholder="" id="nomeRegistrati">
-                    </div>
-
-                    <div class="col">
-                        <label for="cognomeRegistrati" class="text-left">Cognome <span style="color:red"
-                                data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                        <input type="text" class="form-control" placeholder="" id="cognomeRegistrati">
-                    </div>
-                </div>
-
-
-                <label for="telefonoRegistrati" class="text-left">Telefono <span style="color:red"
-                        data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                <input type="text" class="form-control" placeholder="+39" id="telefonoRegistrati">
-
-                <label for="usernameRegistrati" class="mt-3 text-left">Username <span style="color:red"
-                        data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                <input type="text" class="form-control" placeholder="" id="usernameRegistrati">
-
-                <label for="passwordRegistrati" class="mt-3 text-left">Password <span style="color:red"
-                        data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                <input type="password" id="passwordRegistrati" class="form-control">
-
-                <button type="button" class="btn btn-primary btn-sm mb-2 mt-2" id="btnDivRegistrati"
-                    style="width: 100%;">Registrati  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
-                      </svg></button>
-            </div>
-
-
-        </div>
-
-        <!--Fine DIV Registrati-->
-
-        <script>
-            function mostraAccedi() {
-                document.getElementById("divRegistrati").classList.remove("mostra");
-                document.getElementById("divRegistrati").classList.add("nascondi");
-                document.getElementById("divAccedi").classList.remove("nascondi");
-                document.getElementById("divAccedi").classList.add("mostra");
-            }
-
-            function mostraRegistrati() {
-                document.getElementById("divAccedi").classList.remove("mostra");
-                document.getElementById("divAccedi").classList.add("nascondi");
-                document.getElementById("divRegistrati").classList.remove("nascondi");
-                document.getElementById("divRegistrati").classList.add("mostra");
-            }
-        </script>
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
+  </div>
+  <!-- Preloader End -->
+
+  <!-- Document Wrapper   
+=============================== -->
+  <div id="main-wrapper">
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="app.js"></script>
-  <script src="index.js"></script>
+
+    <!-- Content
+  ============================ -->
+    <div id="content" role="main">
+
+      <!-- Sidebar Navigation
+	============================ -->
+      <div class="idocs-navigation bg-dark docs-navigation-dark">
+        <ul class="nav flex-column ">
+          <li class="nav-item"><a class="nav-link active" href="#start">Inizio</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#architettura_informazione">Architettura informazione</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#UML">UML</a>
+            <ul class="nav flex-column">
+              <li class="nav-item"><a class="nav-link" href="#umlcasiduso">Casi d'uso</a></li>
+              <li class="nav-item"><a class="nav-link" href="#umloggetti">Oggetti</a></li>
+              <li class="nav-item"><a class="nav-link" href="#umlstato">Stato</a></li>
+              <li class="nav-item"><a class="nav-link" href="#umlsequenza">Sequenza</a></li>
+
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#contenuti">Contenuti</a>
+
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#wireframes">Wireframes</a></li>
+
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#progetto">Il progetto</a>
+            <ul class="nav flex-column">
+              <li class="nav-item"><a class="nav-link" href="#link">Link al progetto</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="idocs-content">
+        <div class="container">
+
+          <section id="start">
+            <h1>Documentazione</h1>
+            <h2>Negozio Vendita usato</h2>
+            <p class="lead">Si vuole realizzare un applicazione che permetta agli utenti di: 
+              <br>ㅤregistrare il proprio account
+              <br>ㅤaccedere al proprio account
+              <br>ㅤgestire il proprio account
+              <br>ㅤmettere in vendita i propri oggetti creando degli annunci contenententi:
+              <br>ㅤㅤ- Foto
+              <br>ㅤㅤ- Nome
+              <br>ㅤㅤ- Descrizione
+              <br>ㅤㅤ- Prezzo 
+              <br>ㅤㅤ- Zona
+              <br>ㅤImpostare lo stato dell'annuncio tra "Disponibile", "In sospeso" e "Venduto" 
+              <br>ㅤCercare tra tutti gli annunci tramite barra di ricerca
+              <br>ㅤContattare i proprietari di altri annunci per la trattativa.
+              <br>ㅤCreando una piattaforma interamente navigabile e responsive adattabile su tutte le dimensioni di schermo (desktop e mobile).
+
+            </p>
+            <hr>
+            <div class="row">
+              <div class="col-sm-6 col-lg-4">
+                <ul class="list-unstyled">
+                  <li><strong>Classe/Anno:</strong> 5C inf - 23/24</li>
+                  <li><strong>Author:</strong> Lorenzo Manfredi</li>
+                </ul>
+              </div>
+              <div class="col-sm-6 col-lg-4">
+                <ul class="list-unstyled">
+                  <li><strong class="font-weight-700">Creato:</strong> 25 aprile 2024</li>
+                  <li><strong>Ultima modifica:</strong> ----</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <hr class="divider">
+
+          <section id="architettura_informazione">
+            <h2>Architettura informazione, Schema ER</h2>
+
+            <img src="/assets/images/UML/ErUsatoManfredi.drawio.png" </section>
+
+            <hr class="divider">
+
+
+            <section id="UML">
+              <h2>UML</h2>
+
+            </section>
+
+            <section id="umlcasiduso">
+              <h2>Diagramma di Casi d'uso</h2>
+              <img src="/assets/images/UML/CasiUsoUsatoManfredi.drawio.png" style="width: 500px;" />
+
+            </section>
+            <br>
+
+            <section id="umloggetti">
+              <h2>Diagramma di oggetti</h2>
+              <img src="/assets/images/UML/oggettiUsatoManfredi.drawio.png" />
+
+            </section>
+            <br>
+
+            <section id="umlstato">
+              <h2>Diagramma di Stato</h2>
+              <img src="/assets/images/UML/statoUsatoManfredi.drawio.png" style="height:800px; width: 300px;" />
+
+            </section>
+            <br>
+
+            <section id="umlsequenza">
+              <h2>Diagramma di Sequenza</h2>
+              <img src="/assets/images/UML/sequenzaUsatoManfredi.drawio.png" />
+
+            </section>
+            <br>
+
+            <hr class="divider">
+
+            <section id="contenuti">
+              <h2>Contenuti del progetto</h2>
+
+              <div class="row ">
+                <div class="col">
+                  <h3>Logo 1</h3>
+                  <img src="/assets/images/brand/logo1.png">
+                </div>
+                <div class="col">
+                  <h3>Logo 2</h3>
+                  <img src="/assets/images/brand/logo2.png">
+                </div>
+              </div>
+
+              <h3>Color Palette</h3>
+              <img src="/assets/images/brand/colorPalette.png">
+              <h3>Font Palette</h3>
+              <img src="/assets/images/brand/fontPalette.png">
+            </section>
+
+            <hr class="divider">
+
+            <section id="wireframes">
+              <h2>Wireframes</h2>
+
+              <h3>Navigazione Schermate</h3>
+              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                </ol>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img class="d-block w-100" src="/assets/images/schermate/schermataAccedi.png" alt="Schermata Accedi">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="/assets/images/schermate/schermataRegistrati.png" alt="Schermata registrati">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="/assets/images/schermate/schermataHome.png" alt="schermata Home">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="/assets/images/schermate/schermataAreaPrivata.png" alt="schermata Area Privata">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="/assets/images/schermate/scheramtaCambioPassUser.png" alt="schermata Cambio username e password">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="/assets/images/schermate/schermataCreaAnnuncio.png" alt="schermata Crea Annuncio">
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+
+
+              <hr class="divider">
+
+              <section id="progetto">
+                <h2>Il progetto</h2>
+                <h4>Credenziali: </h4>
+                <p>Mio Account:</p>
+                <p><strong>Username:</strong> <br>ㅤㅤ- vampy</p>
+                <p><strong>Password:</strong> <br>ㅤㅤ- vampy123</p>
+
+                <section id="link">
+                  <h2>Link al progetto</h2>
+                  <a href="/accesso.html">Link al progetto </a>
+
+                </section>
+
+        </div>
+      </div>
+
+    </div>
+    <!-- Content end -->
+
+    <!-- Footer
+  ============================ -->
+    <footer id="footer" class="section bg-dark footer-text-light">
+      <div class="container">
+
+        <p class="text-center">ITT e LSSA "Molinari" - Milano <a href="progettimolinari.it">Progetti Molinari</a>. Tutti
+          i diritti riservati</p>
+
+      </div>
+    </footer>
+    <!-- Footer end -->
+
+  </div>
+  <!-- Document Wrapper end -->
+
+  <!-- Back To Top -->
+  <a id="back-to-top" data-toggle="tooltip" title="Back to Top" href="javascript:void(0)"><i
+      class="fa fa-chevron-up"></i></a>
+
+  <!-- JavaScript
+============================ -->
+  <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Highlight JS -->
+  <script src="assets/vendor/highlight.js/highlight.min.js"></script>
+  <!-- Easing -->
+  <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <!-- Magnific Popup -->
+  <script src="assets/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+  <!-- Custom Script -->
+  <script src="assets/js/theme.js"></script>
 </body>
 
 </html>

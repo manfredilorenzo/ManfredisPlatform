@@ -4,7 +4,7 @@ const http = require("http");
 const path = require("path");
 const app = express();
 const bodyParser = require("body-parser");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const conf = require("./conf.js");
 const connection = mysql.createConnection(conf);
 
@@ -17,6 +17,9 @@ server.listen(80, () => {
     console.log("- server running");
 });
 //---------------------------------------------------------------------------------------------------
+let usernameKeep = "";
+let passwordKeep = "";
+
 try{
   //SERVIZIO DI LOGIN e di ACCESSO
 app.post("/accedi", (req, res) => {
@@ -24,6 +27,8 @@ app.post("/accedi", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     console.log(username + " - " + password);
+    usernameKeep = username;
+    passwordKeep = password;
     //richiamo metodo che controlla
     checkAccesso(username, password)
         //se esiste, restituisco ok altrimenti blocco
@@ -47,8 +52,10 @@ app.post("/registrati", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     console.log(username + " - " + password);
+    usernameKeep = username;
+    passwordKeep = password;
     //richiamo metodo che controlla
-    checkLogin(nome, cognome, telefono, username, password)
+    addRegistrazione(nome, cognome, telefono, username, password)
         //se esiste, restituisco ok altrimenti blocco
         .then((result) => {
             if (result === true) {
@@ -81,6 +88,31 @@ app.post("/ricercaAnnunci", (req, res) => {
             res.status(500).send("Errore durante la ricerca degli annunci");
         });
 });
+
+
+app.post("/sendAnnuncio", (req, res) => {
+    //const foto = req.body.foto;
+    const nome = req.body.nome;
+    const descrizione = req.body.descrizione;
+    const prezzo = req.body.prezzo;
+    const zona = req.body.zona;
+    const stato = req.body.stato;
+    console.log(nome + "-" + descrizione + "-" + prezzo + "-" + zona + "-" + stato);
+    //richiamo metodo che controlla
+    addAnnuncio(nome, descrizione, prezzo, zona, stato)
+        //se esiste, restituisco ok altrimenti blocco
+        .then((result) => {
+            if (result === true) {
+                res.json({ result: "ok" });
+            } else {
+                res.status(401).json({ result: "Unauthorized" });
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).json({ result: "Internal Server Error" });
+        });
+});
 //---------------------------------------------------------------------------------------------------
 
 //FUNZIONE CONTROLLO SU DB delle credenziali
@@ -91,6 +123,7 @@ const checkAccesso = (username, password) => {
         const template = "SELECT * FROM NoteUtente WHERE username = '%USERNAME' AND password = '%PASSWORD'";
         //query finale
         const sql = template.replace("%USERNAME", username).replace("%PASSWORD", password);
+        console.log("query creata: "+ sql);
 
         //eseguo e controllo
         executeQuery(sql)
@@ -110,11 +143,49 @@ const checkAccesso = (username, password) => {
     });
 };
 
-const addRegistrazione = (nome, cognome, telefono, username, password) => {      
-        const template = "INSERT INTO NoteUtente ('username', 'nome', 'cognome',  'password', 'telefono') VALUES ('%USERNAME', '%NOME', '%COGNOME', '%PASSWORD', '%TELEFONO')";
+const addRegistrazione = (nome, cognome, telefono, username, password) => {  
+    return new Promise ((resolve,reject) => {
+        const template = "INSERT INTO NoteUtente (username, nome, cognome, password, telefono) VALUES ('%USERNAME', '%NOME', '%COGNOME', '%PASSWORD', '%TELEFONO')";
         const sql = template.replace("%USERNAME", username).replace("%NOME", nome).replace("%COGNOME", cognome).replace("%PASSWORD", password).replace("%TELEFONO", telefono);
+        console.log("query creata: " + sql)
+        return executeQuery(sql)
+        .then((result) => {
+            //se maggiore di 0, ha inserito il nuovo utente
+            if (result.affectedRows > 0) {
+                resolve(true); 
+            } else {
+                //altrime FALSE, non lo ha inserito per qualche motivo
+                resolve(false); 
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            reject(error);
+        });
+    })        
+};
 
-        return executeQuery(sql);
+
+const addAnnuncio = (nome, descrizione, prezzo, zona, stato) => {  
+    return new Promise ((resolve,reject) => {
+        const template = "INSERT INTO Annuncio (nome, descrizione, prezzo, zona, utenteId,  status) VALUES ('%NOME', '%DESCRIZIONE', '%PREZZO', '%ZONA', '%UTENTEID', '%STATO')";
+        const sql = template.replace("%NOME", nome).replace("%DESCRIZIONE", descrizione).replace("%PREZZO", prezzo).replace("%ZONA", zona).replace("%UTENTEID","1").replace("%STATO", stato);
+        console.log("query creata: " + sql)
+        return executeQuery(sql)
+        .then((result) => {
+            //se maggiore di 0, ha inserito il nuovo utente
+            if (result.affectedRows > 0) {
+                resolve(true); 
+            } else {
+                //altrime FALSE, non lo ha inserito per qualche motivo
+                resolve(false); 
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            reject(error);
+        });
+    })        
 };
 //---------------------------------------------------------------------------------------------------
 

@@ -17,8 +17,8 @@ const btnRegistrati = document.getElementById("btnDivRegistrati");
 //Richiamo della funzione 
 btnAccedi.onclick = () => {
     const credenziali = {
-      username: usernameAccedi.value,
-      password: passwordAccedi.value,
+      "username": usernameAccedi.value,
+      "password": passwordAccedi.value,
     };
     console.log(credenziali);
     sendAccedi(credenziali).then((result) => {
@@ -41,14 +41,14 @@ btnRegistrati.onclick = () => {
         "password": passwordRegistrati.value
     };
     console.log(credenziali);
-    sendRegistrati(credenziali).then ((result) => {
-        if (result.resul === 'ok') {
-            //CAMBIO PAGINA
+    sendRegistrati(credenziali).then((result) => {
+        if (result.result === "ok") {
+          console.log("Accesso riuscito");
+          window.location.href = "home.html";
         } else {
             alert("Registrazione non riuscita, riprovare tra poco");
         }
-    })
-
+    });
 }
 //------------------------------------------------------------------------------------------
 //Funzione per mandare credenziali al server
