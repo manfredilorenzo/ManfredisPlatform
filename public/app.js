@@ -8,7 +8,7 @@ const telefonoRegistrati = document.getElementById("telefonoRegistrati");
 const usernameRegistrati = document.getElementById("usernameRegistrati");
 const passwordRegistrati = document.getElementById("passwordRegistrati");
 
-const btnAccedi = document.getElementById("btnDivRegistrati");
+const btnAccedi = document.getElementById("btnDivAccedi");
 const btnRegistrati = document.getElementById("btnDivRegistrati");
 
 
@@ -23,7 +23,8 @@ btnAccedi.onclick = () => {
     console.log(credenziali);
     sendAccedi(credenziali).then((result) => {
       if (result.result === "ok") {
-        //CAMBIO PAGINA
+        console.log("Accesso riuscito");
+        window.location.href = "home.html";
       } else {
         alert("Credenziali errate");
       }
