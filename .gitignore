@@ -1,0 +1,5 @@
+.replit
+replit.nix
+node_modules
+ca.pem
+conf.js
