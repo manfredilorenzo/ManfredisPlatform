@@ -3,13 +3,17 @@ const divRisultati = document.getElementById("divRisultati");
 const barraDiRicerca = document.getElementById("barraDiRicerca");
 const invioBarraDiRicerca = document.getElementById("invioBarraDiRicerca");
 
+const btnGoProfilo = document.getElementById("btnGoProfilo");
+
+
+
 invioBarraDiRicerca.onclick = () => {
   const ricerca = {
-    "ricerca" : barraDiRicerca.value
+    "ricerca": barraDiRicerca.value
   };
-sendRicerca(ricerca).then ((result) => {
-  render(result);
-})
+  sendRicerca(ricerca).then((result) => {
+    render(result);
+  })
 }
 
 
@@ -31,6 +35,7 @@ const sendRicerca = (ricerca) => {
 };
 
 
+
 const templateCard = `
 <div class="col mt-2 mb-2">
 <div class="card" style="width: 18rem;">
@@ -46,19 +51,20 @@ const templateCard = `
 `;
 
 
-const render = (dati) => {
-    for(let i = 0; i < dati.length; i++) {
+const renderAnn = (dati) => {
+  for (let i = 0; i < dati.length; i++) {
 
-      //calcolo percorso immagine con path + nome annuncio
-      //Calcolo url pagina, CAPIRE COME FARE
-      const cardHTML = templateCard
-        .replace('%PERCORSO', percorso)
-        .replace('%TITOLO', dati.titolo)
-        .replace('%DESCRIZIONE', dati.descrizione)
-        .replace('%PREZZO', dati.prezzo)
-        .replace('%URLPAGINA', urlPagina);
-    }
+    //calcolo percorso immagine con path + nome annuncio
+    //Calcolo url pagina, CAPIRE COME FARE
+    const cardHTML = templateCard
+      .replace('%PERCORSO', percorso)
+      .replace('%TITOLO', dati.titolo)
+      .replace('%DESCRIZIONE', dati.descrizione)
+      .replace('%PREZZO', dati.prezzo)
+      .replace('%URLPAGINA', urlPagina);
+  }
 
-    // Aggiungi il template al DOM
-    divRisultati.innerHTML += cardHTML;
+  // Aggiungi il template al DOM
+  divRisultati.innerHTML += cardHTML;
 };
+

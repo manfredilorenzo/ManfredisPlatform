@@ -7,7 +7,6 @@ const statoAnnuncio = document.getElementById("statoAnnuncio");
 
 const pubblicaAnnuncio = document.getElementById("pubblicaAnnuncio");
 
-
 const divAnnunci = document.getElementById("divAnnunci");
 
 // Gestisci il caricamento del file quando l'utente seleziona un'immagine
@@ -43,7 +42,7 @@ pubblicaAnnuncio.onclick = () => {
     };
     sendAnnuncio(infoAnnuncio).then((result) => {
         if (result.result === "ok") {
-          render();
+          getAnnunci();
 
         } else {
             alert("Pubblicazione non riuscita, riprovare tra poco");
@@ -69,6 +68,7 @@ pubblicaAnnuncio.onclick = () => {
   };
 
 
+
   const templateAnnuncio = `
   <div class="border mt-5 " style="width: 100%; height: 250px;">
   <div class="row">
@@ -89,7 +89,8 @@ pubblicaAnnuncio.onclick = () => {
   </div>
 </div>
 `;
-
+/*
+OLD RENDER
 const render = () => {
     const annuncioRend = templateAnnuncio
         .replace("%NOME", nomeAnnuncio.value)
@@ -100,5 +101,36 @@ const render = () => {
 
         divAnnunci.innerHTML += annuncioRend;
 }
+*/
 
-  
+const render = (annunci) => {
+  // Cicla attraverso gli annunci ricevuti
+  annunci.forEach((annuncio) => {
+      const annuncioRend = templateAnnuncio
+          .replace("%NOME", annuncio.nome)
+          .replace("%DESCRIZIONE", annuncio.descrizione)
+          .replace("%PREZZO", annuncio.prezzo)
+          .replace("%ZONA", annuncio.zona)
+          .replace("%STATO", annuncio.status);
+
+      divAnnunci.innerHTML += annuncioRend;
+  });
+}
+
+const getAnnunci = () => {
+  return fetch("/getAnnunciUtente")
+    .then((response) => response.json())
+    .then((json) => {
+      // Assicurati che json contenga l'array di annunci
+      
+      console.log("Dati ricevuti:", json.annunci); // Stampa i dati ricevuti sulla console
+      render(json.annunci); // Passa l'array di annunci alla funzione render
+    })
+    .catch((error) => {
+      console.error('Errore durante il recupero degli annunci:', error);
+    });
+}
+
+window.onload = () =>{
+  getAnnunci();
+}

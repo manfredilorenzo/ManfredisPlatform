@@ -113,6 +113,34 @@ app.post("/sendAnnuncio", (req, res) => {
             res.status(500).json({ result: "Internal Server Error" });
         });
 });
+
+app.get("/getAnnunciUtente", (req, res) => {
+    const username = usernameKeep; // Ottieni l'username conservato
+
+    // Ottieni l'ID utente associato all'username
+    getIdUtente(username)
+        .then((response) => {
+            const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
+            console.log("ID utente:", idUtente);
+
+            // Ora che abbiamo l'ID utente, possiamo ottenere gli annunci associati
+            selectAnnunciUtente(idUtente)
+                .then((annunci) => {
+                    console.log("Annunci dell'utente:", annunci);
+                    // Invia gli annunci al client
+                    res.json({ annunci: annunci });
+                })
+                .catch((error) => {
+                    console.log("Errore nel recupero degli annunci:", error);
+                    res.status(500).json({ error: "Errore nel recupero degli annunci" });
+                });
+        })
+        .catch((error) => {
+            console.log("Errore nel recupero dell'ID utente:", error);
+            res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
+        });
+});
+  
 //---------------------------------------------------------------------------------------------------
 
 //FUNZIONE CONTROLLO SU DB delle credenziali
@@ -187,6 +215,26 @@ const addAnnuncio = (nome, descrizione, prezzo, zona, stato) => {
         });
     })        
 };
+
+const selectAnnunciUtente = (idUt) => {
+    const template = `
+    SELECT * FROM Annuncio WHERE utenteId = '%UTENTEID';
+       `;
+       const sql = template.replace("%UTENTEID", idUt);
+       console.log("query get annunci: " + sql);
+
+    return executeQuery(sql); 
+ }
+
+ const getIdUtente = (username) => {
+    const template = `
+    SELECT id FROM NoteUtente WHERE username = '%USERNAME';
+       `;
+       const sql = template.replace("%USERNAME", username);
+       console.log("query get id con username: " + sql);
+
+    return executeQuery(sql); 
+ }
 //---------------------------------------------------------------------------------------------------
 
 //FUNZIONE PER ESEGUIRE QUERY SU DB
@@ -227,3 +275,5 @@ const ricercaAnnunci = (ricerca) => {
   console.log("Errore");
   console.log(e);
 }
+
+ 
