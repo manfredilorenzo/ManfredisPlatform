@@ -16,9 +16,11 @@ const server = http.createServer(app);
 server.listen(80, () => {
     console.log("- server running");
 });
-//---------------------------------------------------------------------------------------------------
+
 let usernameKeep = "";
 let passwordKeep = "";
+//---------------------------------------------------------------------------------------------------
+//SERVIZI RICHIAMABILI
 
 try{
   //SERVIZIO DI LOGIN e di ACCESSO
@@ -171,6 +173,7 @@ app.post("/changeUsername", (req, res) => {
 
   
 //---------------------------------------------------------------------------------------------------
+//FUNZIONI OPERAZIONI SU DB
 
 //FUNZIONE CONTROLLO SU DB delle credenziali
 const checkAccesso = (username, password) => {
@@ -200,6 +203,7 @@ const checkAccesso = (username, password) => {
     });
 };
 
+//FUNZIONA
 const addRegistrazione = (nome, cognome, telefono, username, password) => {  
     return new Promise ((resolve,reject) => {
         const template = "INSERT INTO NoteUtente (username, nome, cognome, password, telefono) VALUES ('%USERNAME', '%NOME', '%COGNOME', '%PASSWORD', '%TELEFONO')";
@@ -222,7 +226,7 @@ const addRegistrazione = (nome, cognome, telefono, username, password) => {
     })        
 };
 
-
+//FUNZIONA
 const addAnnuncio = (nome, descrizione, prezzo, zona, stato) => {  
     return new Promise ((resolve,reject) => {
         const template = "INSERT INTO Annuncio (nome, descrizione, prezzo, zona, utenteId,  status) VALUES ('%NOME', '%DESCRIZIONE', '%PREZZO', '%ZONA', '%UTENTEID', '%STATO')";
@@ -245,6 +249,7 @@ const addAnnuncio = (nome, descrizione, prezzo, zona, stato) => {
     })        
 };
 
+//FUNZIONA
 const selectAnnunciUtente = (idUt) => {
     const template = `
     SELECT * FROM Annuncio WHERE utenteId = '%UTENTEID';
@@ -255,6 +260,7 @@ const selectAnnunciUtente = (idUt) => {
     return executeQuery(sql); 
  }
 
+ //FUNZIONA
  const getIdUtente = (username) => {
     const template = `
     SELECT id FROM NoteUtente WHERE username = '%USERNAME';
@@ -265,6 +271,7 @@ const selectAnnunciUtente = (idUt) => {
     return executeQuery(sql); 
  }
 
+ //FUNZIONA
  const changeUsername = (username, idUtente) => {
     const template = `
     UPDATE NoteUtente SET username = '%NUOVOUSER' WHERE id = '%UTENTEID';
@@ -275,25 +282,8 @@ const selectAnnunciUtente = (idUt) => {
     return executeQuery(sql); 
  }
 
-//---------------------------------------------------------------------------------------------------
-
-//FUNZIONE PER ESEGUIRE QUERY SU DB
-const executeQuery = (sql) => {
-    return new Promise((resolve, reject) => {
-        connection.query(sql, function (err, result) {
-            if (err) {
-                console.error(err);
-                reject();
-            }
-            //se funziona stampo messaggio 
-            console.log('done');
-            resolve(result);
-        });
-    })
-}
-//---------------------------------------------------------------------------------------------------
-
-const ricercaAnnunci = (ricerca) => {
+ //NON PROVATA
+ const ricercaAnnunci = (ricerca) => {
     return new Promise((resolve, reject) => {
         //template della query
         const template ="SELECT * FROM Annunci WHERE nome LIKE '%$RICERCA%' OR descrizione LIKE '%$RICERCA%'";
@@ -315,5 +305,22 @@ const ricercaAnnunci = (ricerca) => {
   console.log("Errore");
   console.log(e);
 }
+
+//---------------------------------------------------------------------------------------------------
+//FUNZIONE PER ESEGUIRE QUERY SU DB
+const executeQuery = (sql) => {
+    return new Promise((resolve, reject) => {
+        connection.query(sql, function (err, result) {
+            if (err) {
+                console.error(err);
+                reject();
+            }
+            //se funziona stampo messaggio 
+            console.log('done');
+            resolve(result);
+        });
+    })
+}
+//---------------------------------------------------------------------------------------------------
 
  
