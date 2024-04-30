@@ -9,6 +9,23 @@ const pubblicaAnnuncio = document.getElementById("pubblicaAnnuncio");
 
 const divAnnunci = document.getElementById("divAnnunci");
 
+const nuovoUsername = document.getElementById("nuovoUsername");
+const btnSalvaNuovoUsername = document.getElementById ("btnSalvaNuovoUsername");
+
+btnSalvaNuovoUsername.onclick = () => {
+  const nuovoUsernameVal = {"nuovoUser" : nuovoUsername.value};
+  sendNewUsername(nuovoUsernameVal).then((result) => {
+    if (result.result === "ok") {
+      getAnnunci();
+
+    } else {
+        alert("Cambio username non riscito, riprovare tra poco");
+    }
+});
+
+
+}
+
 // Gestisci il caricamento del file quando l'utente seleziona un'immagine
 fotoAnnuncio.addEventListener('change', function() {
     const file = this.files[0];
@@ -67,10 +84,27 @@ pubblicaAnnuncio.onclick = () => {
     });
   };
 
+  const sendNewUsername = (newUser) => {
+    return new Promise((resolve, reject) => {
+      fetch("/changeUsername", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          resolve(json);
+        });
+    });
+  };
 
 
+
+  //template annuncio 
   const templateAnnuncio = `
-  <div class="border mt-5 " style="width: 100%; height: 250px;">
+  <div class="border mt-5 " style="width: 100%; height: 250px; border-radius:5px">
   <div class="row">
       <div class="col-3">
           <div class="border" style="width: 200px; height: 200px; margin-top: 20px; margin-left: 20px;">
@@ -89,23 +123,11 @@ pubblicaAnnuncio.onclick = () => {
   </div>
 </div>
 `;
-/*
-OLD RENDER
-const render = () => {
-    const annuncioRend = templateAnnuncio
-        .replace("%NOME", nomeAnnuncio.value)
-        .replace("%DESCRIZIONE", descrizioneAnnuncio.value)
-        .replace("%PREZZO", prezzoAnnuncio.value)
-        .replace("%ZONA", zonaAnnuncio.value)
-        .replace("%STATO", statoAnnuncio.value);
-
-        divAnnunci.innerHTML += annuncioRend;
-}
-*/
 
 const render = (annunci) => {
-  // Cicla attraverso gli annunci ricevuti
+  // per tutti gli annunci prensenti
   annunci.forEach((annuncio) => {
+    //faccio il replace delle info
       const annuncioRend = templateAnnuncio
           .replace("%NOME", annuncio.nome)
           .replace("%DESCRIZIONE", annuncio.descrizione)
@@ -113,6 +135,7 @@ const render = (annunci) => {
           .replace("%ZONA", annuncio.zona)
           .replace("%STATO", annuncio.status);
 
+          //aggiungo al div
       divAnnunci.innerHTML += annuncioRend;
   });
 }
@@ -121,10 +144,9 @@ const getAnnunci = () => {
   return fetch("/getAnnunciUtente")
     .then((response) => response.json())
     .then((json) => {
-      // Assicurati che json contenga l'array di annunci
       
-      console.log("Dati ricevuti:", json.annunci); // Stampa i dati ricevuti sulla console
-      render(json.annunci); // Passa l'array di annunci alla funzione render
+      console.log("Dati ricevuti:", json.annunci); // stampo in console
+      render(json.annunci); // richiamo render con dati
     })
     .catch((error) => {
       console.error('Errore durante il recupero degli annunci:', error);

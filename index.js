@@ -140,6 +140,34 @@ app.get("/getAnnunciUtente", (req, res) => {
             res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
         });
 });
+
+
+app.post("/changeUsername", (req, res) => {
+    const username = req.body.username; // Ottieni l'username ricevuto
+
+    // Ottieni l'ID utente associato all'username
+    getIdUtente(username)
+        .then((response) => {
+            const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
+            console.log("ID utente:", idUtente);
+
+            // Ora che abbiamo l'ID utente, possiamo cambiare l'username
+            changeUsername(username, idUtente)
+                .then((result) => {
+                    console.log("Username cambiato con successo");
+                    res.json({ success: true });
+                })
+                .catch((error) => {
+                    console.log("Errore nel cambio dell'username:", error);
+                    res.status(500).json({ error: "Errore nel cambio dell'username" });
+                });
+        })
+        .catch((error) => {
+            console.log("Errore nel recupero dell'ID utente:", error);
+            res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
+        });
+});
+
   
 //---------------------------------------------------------------------------------------------------
 
@@ -235,6 +263,17 @@ const selectAnnunciUtente = (idUt) => {
 
     return executeQuery(sql); 
  }
+
+ const changeUsername = (username, idUtente) => {
+    const template = `
+    UPDATE NoteUtente SET username = '%NUOVOUSER' WHERE id = '%UTENTEID';
+       `;
+    const sql = template.replace("%NUOVOUSER", username).replace("%UTENTEID", idUtente);
+    console.log("query cambio username: " + sql);
+
+    return executeQuery(sql); 
+ }
+
 //---------------------------------------------------------------------------------------------------
 
 //FUNZIONE PER ESEGUIRE QUERY SU DB
