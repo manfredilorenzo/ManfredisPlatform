@@ -143,7 +143,8 @@ app.get("/getAnnunciUtente", (req, res) => {
 
 
 app.post("/changeUsername", (req, res) => {
-    const username = req.body.username; // Ottieni l'username ricevuto
+    const username = usernameKeep; // Ottieni l'username conservato
+    const nuovoUsername = req.body.nuovoUser; // Ottieni l'username ricevuto
 
     // Ottieni l'ID utente associato all'username
     getIdUtente(username)
@@ -152,7 +153,7 @@ app.post("/changeUsername", (req, res) => {
             console.log("ID utente:", idUtente);
 
             // Ora che abbiamo l'ID utente, possiamo cambiare l'username
-            changeUsername(username, idUtente)
+            changeUsername(nuovoUsername, idUtente)
                 .then((result) => {
                     console.log("Username cambiato con successo");
                     res.json({ success: true });

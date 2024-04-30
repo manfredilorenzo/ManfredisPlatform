@@ -15,8 +15,10 @@ const btnSalvaNuovoUsername = document.getElementById ("btnSalvaNuovoUsername");
 btnSalvaNuovoUsername.onclick = () => {
   const nuovoUsernameVal = {"nuovoUser" : nuovoUsername.value};
   sendNewUsername(nuovoUsernameVal).then((result) => {
-    if (result.result === "ok") {
-      getAnnunci();
+    if (result.success) {
+      alert("Username cambiato con successo.")
+      document.getElementById("divCambioUsername").classList.remove("mostra");
+      document.getElementById("divCambioUsername").classList.add("nascondi");
 
     } else {
         alert("Cambio username non riscito, riprovare tra poco");
