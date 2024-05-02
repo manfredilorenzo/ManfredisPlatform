@@ -12,6 +12,31 @@ const divAnnunci = document.getElementById("divAnnunci");
 const nuovoUsername = document.getElementById("nuovoUsername");
 const btnSalvaNuovoUsername = document.getElementById ("btnSalvaNuovoUsername");
 
+
+const passwordattuale = document.getElementById("passwordAttuale");
+const nuovaPassword1 = document.getElementById("nuovaPassword1");
+const nuovaPassword2 = document.getElementById("nuovaPassword1");
+const btnSalvaNuovaPassword = document.getElementById("btnSalvaNuovaPassword");
+
+
+btnSalvaNuovaPassword.onclick = () => {
+  const nuovePass = {
+    "passwordAttuale" : passwordattuale.value,
+    "password1" : nuovaPassword1.value,
+    "password2" : nuovaPassword2.value
+  }
+  sendNewPass(nuovePass).then((result) => {
+    if (result.success) {
+      alert("Password cambiata con successo.")
+      document.getElementById("divCambioPassword").classList.remove("mostra");
+      document.getElementById("divCambioPassword").classList.add("nascondi");
+
+    } else {
+        alert("Cambio username non riscito, riprovare tra poco");
+    }
+});
+}
+
 btnSalvaNuovoUsername.onclick = () => {
   const nuovoUsernameVal = {"nuovoUser" : nuovoUsername.value};
   sendNewUsername(nuovoUsernameVal).then((result) => {
@@ -94,6 +119,23 @@ pubblicaAnnuncio.onclick = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newUser),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          resolve(json);
+        });
+    });
+  };
+
+
+  const sendNewPass = (newPass) => {
+    return new Promise((resolve, reject) => {
+      fetch("/changePassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPass),
       })
         .then((response) => response.json())
         .then((json) => {
