@@ -312,6 +312,7 @@ try {
         return executeQuery(sql);
     }
 
+    //FUNZIONA
     const changePassword = (idUtente, passAttuale, pass1, pass2) => {
 
         // Passo 1: Seleziona la password attuale dal database
@@ -328,31 +329,27 @@ try {
     
                 const passwordFromDB = result[0].password;
     
-                // Passo 2: Verifica se la password attuale passata dall'utente corrisponde a quella ottenuta dal database
+                // Passo 2: verifico che la pass passata e quella sul db siano uguali 
                 if (passAttuale !== passwordFromDB) {
                     throw new Error("La password attuale non è corretta");
                 }
     
-                // Passo 3: Verifica se la nuova password e la conferma della nuova password sono uguali
+                // Passo 3: Verifico che le due pass nuove passate siano uguali
                 if (pass1 !== pass2) {
                     throw new Error("Le nuove password non corrispondono");
                 }
     
-                // Passo 4: Cambia la password nel database
+                // Passo 4: Cambio la password sul db
                 const templateUpdate = `
                     UPDATE NoteUtente SET password = '%NUOVAPASSWORD' WHERE id = '%IdUtente';
                 `;
                 const sqlUpdate = templateUpdate.replace("%NUOVAPASSWORD", pass1).replace("%IdUtente", idUtente);
-    
-                // Esegui la query per cambiare la password
                 return executeQuery(sqlUpdate);
             })
             .then(() => {
-                // Password cambiata con successo
                 return "Password cambiata con successo";
             })
-            .catch((error) => {
-                // Gestisci gli errori
+            .catch((error) => { 
                 throw error;
             });
     }
