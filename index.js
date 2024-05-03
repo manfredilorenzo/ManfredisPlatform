@@ -359,13 +359,15 @@ try {
     const ricercaAnnunci = (ricerca) => {
         return new Promise((resolve, reject) => {
             //template della query
-            const template = "SELECT * FROM Annunci WHERE nome LIKE '%$RICERCA%' OR descrizione LIKE '%$RICERCA%'";
+            const template = "SELECT * FROM Annuncio WHERE nome LIKE '%$RICERCA%' OR descrizione LIKE '%$RICERCA%'";
 
             //query finale
             const sql = template.replaceAll("$RICERCA", ricerca);
+            console.log ("query ricerca annuncio: " + sql);
+
 
             // Esegui la query con i parametri del database
-            executeQuery(template, values)
+            executeQuery(sql)
                 .then((result) => {
                     resolve(result);
                 })
