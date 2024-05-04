@@ -2,15 +2,36 @@ const fs = require("fs");
 const express = require("express");
 const http = require("http");
 const path = require("path");
+const multer = require('multer');
 const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 const conf = require("./conf.js");
 const connection = mysql.createConnection(conf);
 
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '/public/immaginiCaricate'));
+    },
+    filename: (req, file, cb) => {
+
+        const lastDotIndex = file.originalname.lastIndexOf('.');
+        const fileExtension = file.originalname.substring(lastDotIndex + 1).toLowerCase();
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", express.static(path.join(__dirname, "public")));
+
+
 
 const server = http.createServer(app);
 server.listen(80, () => {
@@ -200,6 +221,16 @@ try {
                 res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
             });
     });
+    
+
+    app.post('/upload', upload.single('file'), (req, res) => {
+        if (!req.file) {
+            return res.status(400).send('Nessun file caricato.');
+        }
+
+        res.send('File caricato con successo.');
+    });
+
 
 
     //---------------------------------------------------------------------------------------------------
@@ -318,7 +349,7 @@ try {
         // Passo 1: Seleziona la password attuale dal database
         const templateSelect = `SELECT password FROM NoteUtente WHERE id = '%IdUtente';`;
         const sqlSelect = templateSelect.replace("%IdUtente", idUtente);
-    
+
         // Esegui la query per ottenere la password attuale
         return executeQuery(sqlSelect)
             .then((result) => {
@@ -326,19 +357,19 @@ try {
                 if (result.length === 0) {
                     throw new Error("Utente non trovato");
                 }
-    
+
                 const passwordFromDB = result[0].password;
-    
+
                 // Passo 2: verifico che la pass passata e quella sul db siano uguali 
                 if (passAttuale !== passwordFromDB) {
                     throw new Error("La password attuale non è corretta");
                 }
-    
+
                 // Passo 3: Verifico che le due pass nuove passate siano uguali
                 if (pass1 !== pass2) {
                     throw new Error("Le nuove password non corrispondono");
                 }
-    
+
                 // Passo 4: Cambio la password sul db
                 const templateUpdate = `
                     UPDATE NoteUtente SET password = '%NUOVAPASSWORD' WHERE id = '%IdUtente';
@@ -349,11 +380,11 @@ try {
             .then(() => {
                 return "Password cambiata con successo";
             })
-            .catch((error) => { 
+            .catch((error) => {
                 throw error;
             });
     }
-    
+
 
     //NON PROVATA
     const ricercaAnnunci = (ricerca) => {
@@ -363,7 +394,7 @@ try {
 
             //query finale
             const sql = template.replaceAll("$RICERCA", ricerca);
-            console.log ("query ricerca annuncio: " + sql);
+            console.log("query ricerca annuncio: " + sql);
 
 
             // Esegui la query con i parametri del database

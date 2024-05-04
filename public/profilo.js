@@ -52,24 +52,10 @@ btnSalvaNuovoUsername.onclick = () => {
 
 
 }
-
-// Gestisci il caricamento del file quando l'utente seleziona un'immagine
-fotoAnnuncio.addEventListener('change', function() {
-    const file = this.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function() {
-        const imageUrl = reader.result;
-        console.log(imageUrl);
-    };
-
-    if (file) {
-        reader.readAsDataURL(file);
-    }
-});
-
 // Gestisci la pubblicazione dell'annuncio quando si fa clic su "pubblicaAnnuncio"
 pubblicaAnnuncio.onclick = () => {
+
+    caricaFile();
     console.log("nome annuncio: "+ nomeAnnuncio.value);
     console.log("descrizione annuncio: " + descrizioneAnnuncio.value);
     console.log("prezzo annuncio: " + prezzoAnnuncio.value);
@@ -77,7 +63,6 @@ pubblicaAnnuncio.onclick = () => {
     console.log("stato annuncio: " + statoAnnuncio.value);
 
     const infoAnnuncio = {
-        //"foto": imageUrl,
         "nome": nomeAnnuncio.value,
         "descrizione": descrizioneAnnuncio.value,
         "prezzo": prezzoAnnuncio.value,
@@ -152,7 +137,7 @@ pubblicaAnnuncio.onclick = () => {
   <div class="row">
       <div class="col-3">
           <div class="border" style="width: 200px; height: 200px; margin-top: 20px; margin-left: 20px;">
-              <!--IMMAGINE annuncio-->
+              <img src="%PERCORSO" style="width:200px; height:200px">
           </div>
       </div>
       <div class="col" style="margin-top: 20px;">
@@ -169,20 +154,28 @@ pubblicaAnnuncio.onclick = () => {
 `;
 
 const render = (annunci) => {
-  // per tutti gli annunci prensenti
   annunci.forEach((annuncio) => {
     //faccio il replace delle info
-      const annuncioRend = templateAnnuncio
-          .replace("%NOME", annuncio.nome)
-          .replace("%DESCRIZIONE", annuncio.descrizione)
-          .replace("%PREZZO", annuncio.prezzo)
-          .replace("%ZONA", annuncio.zona)
-          .replace("%STATO", annuncio.status);
+    let annuncioRend = templateAnnuncio
+      .replace("%NOME", annuncio.nome)
+      .replace("%DESCRIZIONE", annuncio.descrizione)
+      .replace("%PREZZO", annuncio.prezzo)
+      .replace("%ZONA", annuncio.zona)
+      .replace("%STATO", annuncio.status);
 
-          //aggiungo al div
-      divAnnunci.innerHTML += annuncioRend;
+    try {
+     //provo con png
+      annuncioRend = annuncioRend.replace("%PERCORSO", "immaginiCaricate/" + annuncio.nome + ".jpg");
+    } catch (errore) {
+      //altrimenti provo con jpg
+      annuncioRend = annuncioRend.replace("%PERCORSO", "immaginiCaricate/" + annuncio.nome + ".png");
+    }
+
+    console.log(annuncioRend);
+    //stampo
+    divAnnunci.innerHTML += annuncioRend;
   });
-}
+};
 
 const getAnnunci = () => {
   return fetch("/getAnnunciUtente")
@@ -190,6 +183,7 @@ const getAnnunci = () => {
     .then((json) => {
       
       console.log("Dati ricevuti:", json.annunci); // stampo in console
+      divAnnunci.innerHTML = " ";
       render(json.annunci); // richiamo render con dati
     })
     .catch((error) => {
@@ -199,4 +193,51 @@ const getAnnunci = () => {
 
 window.onload = () =>{
   getAnnunci();
+}
+
+function caricaFile() {
+  const fileInput = document.getElementById('fotoAnnuncio');
+  
+  //controllo che non sia vuoto
+  if (fileInput.files.length === 0) {
+    alert('Nessun file selezionato.');
+    return;
+  }
+
+  //prendo il file caricato
+  const file = fileInput.files[0];
+
+  //Verifico l'estensione SOLO PNG O JPG
+  //const allowedExtensions = ['jpg']; // Estensioni ok
+  /*
+  const fileExtension = file.name.split('.').pop().toLowerCase(); // prendo solo i caratteri dopo il .
+  if (!allowedExtensions.includes(fileExtension)) { //se l'estensione del file caricato non è nell' array
+    alert('Puoi caricare solo file di tipo JPG.');// avviso
+    return;
+  }
+  */
+
+  //creo oggetto formData (della libreria multer)
+  const formData = new FormData();
+  formData.append('file', file, nomeAnnuncio.value + ".jpg"); //metto il nome immagine come il nome annuncio, per recupero in render
+  
+  //invio al servizio
+  fetch('/upload', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Errore durante il caricamento del file.');
+    }
+    return response.text(); 
+  })
+  .then(data => {
+    console.log('Risposta del server:', data);
+    alert('File caricato con successo.');
+  })
+  .catch(error => {
+    console.error('Errore:', error);
+    alert('Si è verificato un errore durante il caricamento del file.');
+  });
 }
