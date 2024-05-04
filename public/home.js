@@ -61,7 +61,7 @@ const renderAnn = (dati) => {
     // Calcolo percorso immagine con path + nome annuncio
     // Calcolo URL pagina, CAPIRE COME FARE
     const cardHTML = templateCard
-      //.replace('%PERCORSO', percorso)
+      .replace('%PERCORSO', "immaginiCaricate/" + dati[i].nome + ".jpg")
       .replace('%TITOLO', dati[i].nome)
       .replace('%DESCRIZIONE', dati[i].descrizione)
       .replace('%PREZZO', dati[i].prezzo + " €");
