@@ -39,20 +39,31 @@ const sendRicerca = (ricerca) => {
 };
 
 
-
 const templateCard = `
 <div class="col mt-2 mb-2">
-<div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="%PERCORSO" alt="Card image cap">
-  <div class="card-body">
-    <h4 class="card-title">%TITOLO</h4>
-    <p class="card-text">%DESCRIZIONE</p>
-    <h5 class="card-text">%PREZZO </h5>
-    <a href="%URLPAGINA" class="btn btn-primary">Contatta</a>
+  <div class="card h-100" style="width: 18rem;">
+    <div style="height: 300px;"> 
+      <img class="card-img-top" src="%PERCORSO" alt="Card image cap" style="object-fit: cover; width: 100%; height: 100%;"> 
+    </div>
+    <div class="card-body">
+      <h4 class="card-title">%TITOLO</h4>
+      <div style="max-height: 100px; overflow-y: auto;">
+      <div style="max-height: 80px; overflow-y: auto;">
+        <p class="card-text">%DESCRIZIONE</p>
+      </div>
+      </div>  
+      <br> 
+      <h5 class="card-text">%PREZZO</h5>
+    </div>
+    <div class="card-footer">
+      <a href="%URLPAGINA" class="btn btn-primary">Contatta</a>
+    </div>
   </div>
 </div>
-</div>
 `;
+
+
+
 
 
 const renderAnn = (dati) => {

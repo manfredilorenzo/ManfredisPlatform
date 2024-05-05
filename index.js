@@ -7,10 +7,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 const conf = require("./conf.js");
-const { Server } = require("socket.io");
-const io = new Server(server);
 const connection = mysql.createConnection(conf);
-
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -39,6 +36,9 @@ const server = http.createServer(app);
 server.listen(80, () => {
     console.log("- server running");
 });
+
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 let usernameKeep = "";
 let passwordKeep = "";
@@ -432,6 +432,8 @@ const executeQuery = (sql) => {
 //---------------------------------------------------------------------------------------------------
 //SERVIZI ROOM CHAT con socket
 
+
+//per connessione tra i due provare con url, premo sul bottone e la url si modifica con //public/home.html#2, il numero rappresenta l'id del annuncio, mettere id nell annuncio 
 
 io.on("connection", (socket) => {
     console.log("a user connected");
