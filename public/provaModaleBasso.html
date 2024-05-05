@@ -14,7 +14,7 @@
       bottom: -100%; /* Inizialmente posizionato fuori dallo schermo */
       right: 0;
       margin: 0;
-      width: 300px; /* Personalizza la larghezza del modale se necessario */
+      width: 400px; /* Personalizza la larghezza del modale se necessario */
       margin-right: 20px; /* Distanza dal bordo destro */
       transition: bottom 0.5s ease; /* Aggiunge un'animazione al movimento del modale */
     }
@@ -43,21 +43,29 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+          <h5 class="modal-title" id="titoloRoom">Titolo Room</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <!-- Altezza del modal body impostata a 500px -->
-          <div style="height: 500px;">
-            Contenuto del corpo del modale...
-            <!-- Aggiungi del testo o altri elementi qui -->
+          <div style="height: 500px;" id="messaggiChat" class="container"> 
+
+            <div class="border mb-3 d-flex justify-content-start text-white" style="width: 300px; height: 60px; border-radius: 10px; background-color: rgba(0,130,250,10);">
+              <p style="padding: 10px;">ciao sono l'acquirente</p>
+            </div>
+          
+            <div class="border mb-3 d-flex justify-content-end text-white " style="width: 300px; height: 60px; border-radius: 10px; background-color: rgba(0,130,250,10); margin-left: 40px;">
+              <p style="padding:10px">ciao sono il venditore</p>
+            </div>   
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          
+          <input type="text" class="form-control" id="inputMesaggio" style="width: 80%;" placeholder="scrivi il tuo messaggio...">
+           <button type="submit" class="btn btn-primary "><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16" style="display: flex; align-items: center; justify-content: center; " >
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+          </svg></button>
         </div>
       </div>
     </div>
