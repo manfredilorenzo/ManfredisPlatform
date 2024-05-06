@@ -47,16 +47,11 @@ const templateCard = `
     </div>
     <div class="card-body">
       <h4 class="card-title">%TITOLO</h4>
-      <div style="max-height: 100px; overflow-y: auto;">
-      <div style="max-height: 80px; overflow-y: auto;">
-        <p class="card-text">%DESCRIZIONE</p>
-      </div>
-      </div>  
       <br> 
       <h5 class="card-text">%PREZZO</h5>
     </div>
     <div class="card-footer">
-      <a href="%URLPAGINA" class="btn btn-primary">Contatta</a>
+      <a href="%URLPAGINA" class="btn btn-primary">Visualizza</a>
     </div>
   </div>
 </div>
@@ -74,9 +69,8 @@ const renderAnn = (dati) => {
     const cardHTML = templateCard
       .replace('%PERCORSO', "immaginiCaricate/" + dati[i].nome + ".jpg")
       .replace('%TITOLO', dati[i].nome)
-      .replace('%DESCRIZIONE', dati[i].descrizione)
-      .replace('%PREZZO', dati[i].prezzo + " €");
-      //.replace('%URLPAGINA', urlPagina)
+      .replace('%PREZZO', dati[i].prezzo + " €")
+      .replace('%URLPAGINA', "paginaDettaglio.html" + "#" + dati[i].id);
 
     // Aggiungi il template al DOM
     divRisultati.innerHTML += cardHTML;

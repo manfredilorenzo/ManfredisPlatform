@@ -12,7 +12,6 @@ const divAnnunci = document.getElementById("divAnnunci");
 const nuovoUsername = document.getElementById("nuovoUsername");
 const btnSalvaNuovoUsername = document.getElementById ("btnSalvaNuovoUsername");
 
-
 const passwordattuale = document.getElementById("passwordAttuale");
 const nuovaPassword1 = document.getElementById("nuovaPassword1");
 const nuovaPassword2 = document.getElementById("nuovaPassword1");
