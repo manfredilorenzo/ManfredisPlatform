@@ -166,6 +166,23 @@ try {
             });
     });
 
+    app.post("/getAnnuncio", (req, res) => {
+        const idAnnuncio = req.body.id;
+        
+        // Assume che selectAnnuncio sia una funzione asincrona che ritorna una Promise
+        selectAnnuncio(idAnnuncio)
+            .then(result => {
+                console.log(result);
+                // Supponendo che result contenga l'annuncio selezionato
+                res.json({ annuncio: result }); // Invia l'annuncio come JSON nella risposta
+            })
+            .catch(error => {
+                console.error("Errore durante la selezione dell'annuncio:", error);
+                res.status(500).json({ error: "Errore durante la selezione dell'annuncio" });
+            });
+    });
+    
+
 
     app.post("/changeUsername", (req, res) => {
         const username = usernameKeep; // Ottieni l'username conservato
@@ -318,6 +335,17 @@ try {
     SELECT * FROM Annuncio WHERE utenteId = '%UTENTEID';
        `;
         const sql = template.replace("%UTENTEID", idUt);
+        console.log("query get annunci: " + sql);
+
+        return executeQuery(sql);
+    }
+
+    //FUNZIONA
+    const selectAnnuncio = (idAnn) => {
+        const template = `
+    SELECT * FROM Annuncio WHERE id = '%IDANNUNCIO';
+       `;
+        const sql = template.replace("%IDANNUNCIO", idAnn);
         console.log("query get annunci: " + sql);
 
         return executeQuery(sql);

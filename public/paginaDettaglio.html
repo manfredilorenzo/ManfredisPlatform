@@ -16,6 +16,29 @@
         .nascondi {
             display: none;
         }
+
+        .modal-bottom-up .modal-dialog {
+      position: fixed;
+      bottom: -100%; 
+      right: 0;
+      margin: 0;
+      width: 400px;
+      margin-right: 20px;
+      transition: bottom 0.5s ease;
+    }
+
+   
+    .modal-bottom-up.show .modal-dialog {
+      bottom: 0; 
+    }
+
+    
+    .modal-body {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    </style>
     </style>
 
 </head>
@@ -23,24 +46,44 @@
 <body class="bg-dark">
     <marquee behavior="scroll" direction="right" style="color: white; " class="bg-secondary">Spedizioni a bassa emissione di Co2 con Manfredi's Platform</marquee>
 
+    
+
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-outline-danger mt-2" style="margin-left:20px"
+    onclick="window.location.href='home.html'"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+        fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+            d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+    </svg></button>
+      </div>
+      <div class="col">
         <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-success mt-2" id="btnGoProfilo" style="margin-right: 20px;" onclick="window.location.href='profilo.html'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                </svg>  Profilo 
-            </button>
-        </div>
+          <button type="button" class="btn btn-success mt-2" id="btnGoProfilo" style="margin-right: 20px;" onclick="window.location.href='profilo.html'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+              </svg>  Profilo 
+          </button>
+      </div>
+      </div>
+    </div>
+
         
+
+        <div id="renderDettaglio" class=" text-white" style="margin: 40px;">
+
+        </div>
          
+<!--AGGIUNGERE TASTO BACK--
 
         <!-- Modal CHAT-->
-  <div class="modal fade modal-bottom-up" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade modal-bottom-up" id="chat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="titoloRoom">Titolo Room</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>

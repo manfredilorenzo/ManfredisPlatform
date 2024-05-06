@@ -40,7 +40,7 @@ const sendRicerca = (ricerca) => {
 
 
 const templateCard = `
-<div class="col mt-2 mb-2">
+<div class="col " style="margin-bottom: 50px; margin-top:50px">
   <div class="card h-100" style="width: 18rem;">
     <div style="height: 300px;"> 
       <img class="card-img-top" src="%PERCORSO" alt="Card image cap" style="object-fit: cover; width: 100%; height: 100%;"> 
