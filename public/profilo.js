@@ -51,7 +51,7 @@ btnSalvaNuovoUsername.onclick = () => {
 
 
 }
-// Gestisci la pubblicazione dell'annuncio quando si fa clic su "pubblicaAnnuncio"
+// Gestione pubblicazione dell'annuncio quando si fa clic su "pubblicaAnnuncio"
 pubblicaAnnuncio.onclick = () => {
 
     caricaFile();
@@ -163,10 +163,10 @@ const render = (annunci) => {
       .replace("%STATO", annuncio.status);
 
     try {
-     //provo con png
+     //provo con jpg
       annuncioRend = annuncioRend.replace("%PERCORSO", "immaginiCaricate/" + annuncio.nome + ".jpg");
     } catch (errore) {
-      //altrimenti provo con jpg
+      //altrimenti provo con png
       annuncioRend = annuncioRend.replace("%PERCORSO", "immaginiCaricate/" + annuncio.nome + ".png");
     }
 
@@ -205,16 +205,6 @@ function caricaFile() {
 
   //prendo il file caricato
   const file = fileInput.files[0];
-
-  //Verifico l'estensione SOLO PNG O JPG
-  //const allowedExtensions = ['jpg']; // Estensioni ok
-  /*
-  const fileExtension = file.name.split('.').pop().toLowerCase(); // prendo solo i caratteri dopo il .
-  if (!allowedExtensions.includes(fileExtension)) { //se l'estensione del file caricato non è nell' array
-    alert('Puoi caricare solo file di tipo JPG.');// avviso
-    return;
-  }
-  */
 
   //creo oggetto formData (della libreria multer)
   const formData = new FormData();

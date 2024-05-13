@@ -64,15 +64,13 @@ const templateCard = `
 const renderAnn = (dati) => {
   for (let i = 0; i < dati.length; i++) {
 
-    // Calcolo percorso immagine con path + nome annuncio
-    // Calcolo URL pagina, CAPIRE COME FARE
     const cardHTML = templateCard
       .replace('%PERCORSO', "immaginiCaricate/" + dati[i].nome + ".jpg")
       .replace('%TITOLO', dati[i].nome)
       .replace('%PREZZO', dati[i].prezzo + " €")
       .replace('%URLPAGINA', "paginaDettaglio.html" + "#" + dati[i].id);
 
-    // Aggiungi il template al DOM
+    // Aggiungo il template al DOM
     divRisultati.innerHTML += cardHTML;
   }
 };

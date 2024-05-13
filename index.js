@@ -162,7 +162,6 @@ try {
 
 
     app.post("/sendAnnuncio", (req, res) => {
-        //const foto = req.body.foto;
         const nome = req.body.nome;
         const descrizione = req.body.descrizione;
         const prezzo = req.body.prezzo;
@@ -187,8 +186,6 @@ try {
 
     app.get("/getAnnunciUtente", (req, res) => {
         const username = usernameKeep; // Ottieni l'username conservato
-
-                // Ora che abbiamo l'ID utente, possiamo ottenere gli annunci associati
                 selectAnnunciUtente(idKeep)
                     .then((annunci) => {
                         console.log("Annunci dell'utente:", annunci);
@@ -204,13 +201,10 @@ try {
 
     app.post("/getAnnuncio", (req, res) => {
         const idAnnuncio = req.body.id;
-
-        // Assume che selectAnnuncio sia una funzione asincrona che ritorna una Promise
         selectAnnuncio(idAnnuncio)
             .then(result => {
                 console.log(result);
-                // Supponendo che result contenga l'annuncio selezionato
-                res.json({ annuncio: result }); // Invia l'annuncio come JSON nella risposta
+                res.json({ annuncio: result }); 
             })
             .catch(error => {
                 console.error("Errore durante la selezione dell'annuncio:", error);
@@ -221,8 +215,8 @@ try {
 
 
     app.post("/changeUsername", (req, res) => {
-        const username = usernameKeep; // Ottieni l'username conservato
-        const nuovoUsername = req.body.nuovoUser; // Ottieni l'username ricevuto
+        const username = usernameKeep; // prendo username conservato
+        const nuovoUsername = req.body.nuovoUser; // prendo username ricevuto 
 
                 // Ora che abbiamo l'ID utente, possiamo cambiare l'username
                 changeUsername(nuovoUsername, idKeep)
@@ -239,15 +233,11 @@ try {
 
 
     app.post("/changePassword", (req, res) => {
-        const username = usernameKeep; // Ottieni l'username conservato
-        const passwordAttuale = req.body.passwordAttuale; // Ottieni l'username ricevuto
+        const username = usernameKeep; // prendo username conservato
+        const passwordAttuale = req.body.passwordAttuale; // prendo username ricevuto
         const password1 = req.body.password1;
         const password2 = req.body.password2;
 
-        // Ottieni l'ID utente associato all'username
-     
-
-                // Ora che abbiamo l'ID utente, possiamo cambiare l'username
                 changePassword(idKeep, passwordAttuale, password1, password2)
                     .then((result) => {
                         console.log("Password cambiata con successo");
@@ -269,12 +259,11 @@ try {
         res.send('File caricato con successo.');
     });
 
+    //NON FUNZIONANTE
     app.post("/saveChat", (req, res) => {
-        const username = usernameKeep; // Ottieni l'username conservato
+        const username = usernameKeep;
         const idAnnuncio = req.body.idAnnuncio;
         const idProprietario = req.body.idProprietario;
-
-        // Ottieni l'ID utente associato all'username
         getIdUtente(username)
             .then((response) => {
                 const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
@@ -445,7 +434,7 @@ try {
     }
 
 
-    //NON PROVATA
+    //FUNZIONA
     const ricercaAnnunci = (ricerca) => {
         return new Promise((resolve, reject) => {
             //template della query

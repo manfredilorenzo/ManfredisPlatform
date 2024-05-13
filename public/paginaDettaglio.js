@@ -55,7 +55,7 @@ window.onload = () => {
               username: usernameSession,
               message: message,
               timestamp: timestamp,
-            }); // Invia l'username e il messaggio
+            });
             messageInput.value="";
             console.log("finito");
           }
@@ -142,8 +142,6 @@ const templateCard = `
 const renderAnn = (dati) => {
   for (let i = 0; i < dati.length; i++) {
 
-    // Calcolo percorso immagine con path + nome annuncio
-    // Calcolo URL pagina, CAPIRE COME FARE
     const cardHTML = templateCard
       .replace('%IMMAGINE', "immaginiCaricate/" + dati[i].nome + ".jpg")
       .replaceAll('%NOME', dati[i].nome)
@@ -154,7 +152,7 @@ const renderAnn = (dati) => {
       .replace('%IDBOTTONE', "chat" + dati[i].id);
 
     console.log(cardHTML);
-    // Aggiungi il template al DOM
+    // Aggiungo il template al DOM
     divDettaglio.innerHTML += cardHTML;
   }
 };
@@ -164,15 +162,11 @@ socket.on('chat message', (data) => {
   const messages = document.getElementById('messaggiChat');
   const li = document.createElement('li');
   li.textContent = "[" + data.timestamp + "]" + " " +  data.username + ": " + data.message;
-  messages.appendChild(li); // Aggiunge il nuovo messaggio alla fine della lista
-  window.scrollTo(0, document.body.scrollHeight); // Scorrimento automatico verso il basso per visualizzare il nuovo messaggio
-  document.getElementById('inputMesaggio').value = ''; // Svuota l'input del messaggio dopo l'invio
+  messages.appendChild(li); 
+  window.scrollTo(0, document.body.scrollHeight); 
+  document.getElementById('inputMesaggio').value = ''; 
 });
-
-
-
 
 const joinRoom = (idRoom) => {
   socket.emit("join room", idRoom);
-
 }
