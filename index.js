@@ -188,14 +188,8 @@ try {
     app.get("/getAnnunciUtente", (req, res) => {
         const username = usernameKeep; // Ottieni l'username conservato
 
-        // Ottieni l'ID utente associato all'username
-        getIdUtente(username)
-            .then((response) => {
-                const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
-                console.log("ID utente:", idUtente);
-
                 // Ora che abbiamo l'ID utente, possiamo ottenere gli annunci associati
-                selectAnnunciUtente(idUtente)
+                selectAnnunciUtente(idKeep)
                     .then((annunci) => {
                         console.log("Annunci dell'utente:", annunci);
                         // Invia gli annunci al client
@@ -205,11 +199,7 @@ try {
                         console.log("Errore nel recupero degli annunci:", error);
                         res.status(500).json({ error: "Errore nel recupero degli annunci" });
                     });
-            })
-            .catch((error) => {
-                console.log("Errore nel recupero dell'ID utente:", error);
-                res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
-            });
+            
     });
 
     app.post("/getAnnuncio", (req, res) => {
@@ -234,14 +224,8 @@ try {
         const username = usernameKeep; // Ottieni l'username conservato
         const nuovoUsername = req.body.nuovoUser; // Ottieni l'username ricevuto
 
-        // Ottieni l'ID utente associato all'username
-        getIdUtente(username)
-            .then((response) => {
-                const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
-                console.log("ID utente:", idUtente);
-
                 // Ora che abbiamo l'ID utente, possiamo cambiare l'username
-                changeUsername(nuovoUsername, idUtente)
+                changeUsername(nuovoUsername, idKeep)
                     .then((result) => {
                         console.log("Username cambiato con successo");
                         res.json({ success: true });
@@ -250,11 +234,7 @@ try {
                         console.log("Errore nel cambio dell'username:", error);
                         res.status(500).json({ error: "Errore nel cambio dell'username" });
                     });
-            })
-            .catch((error) => {
-                console.log("Errore nel recupero dell'ID utente:", error);
-                res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
-            });
+           
     });
 
 
@@ -265,13 +245,10 @@ try {
         const password2 = req.body.password2;
 
         // Ottieni l'ID utente associato all'username
-        getIdUtente(username)
-            .then((response) => {
-                const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
-                console.log("ID utente:", idUtente);
+     
 
                 // Ora che abbiamo l'ID utente, possiamo cambiare l'username
-                changePassword(idUtente, passwordAttuale, password1, password2)
+                changePassword(idKeep, passwordAttuale, password1, password2)
                     .then((result) => {
                         console.log("Password cambiata con successo");
                         res.json({ success: true });
@@ -280,11 +257,7 @@ try {
                         console.log("Errore nel cambio della password:", error);
                         res.status(500).json({ error: "Errore nel cambio della password" });
                     });
-            })
-            .catch((error) => {
-                console.log("Errore nel recupero dell'ID utente:", error);
-                res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
-            });
+            
     });
 
 
@@ -306,17 +279,7 @@ try {
             .then((response) => {
                 const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
                 console.log("ID utente:", idUtente);
-
-                //fare metodo per salvare la chat con parametri
-                changePassword(idUtente, passwordAttuale, password1, password2)
-                    .then((result) => {
-                        console.log("Password cambiata con successo");
-                        res.json({ success: true });
-                    })
-                    .catch((error) => {
-                        console.log("Errore nel cambio della password:", error);
-                        res.status(500).json({ error: "Errore nel cambio della password" });
-                    });
+            
             })
             .catch((error) => {
                 console.log("Errore nel recupero dell'ID utente:", error);
@@ -540,21 +503,7 @@ io.on('connection', (socket) => {
                 ora: timestamp,
                 messaggio: message,
             });
-
-            /*
-                  getIdUtente(username)
-                        .then((response) => {
-                            const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
-                            console.log("ID utente:", idUtente);
-            
-                            salvaMessaggio(message,timestamp, idUtente, room);
-                
-                        })
-                        .catch((error) => {
-                            console.log("Errore nel recupero dell'ID utente:", error);
-                            res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
-                        });
-                        */
+           //salvaMessaggio(message,timestamp, idKeep, room);  
         }
 
         console.log(chats);
