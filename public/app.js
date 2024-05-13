@@ -7,6 +7,7 @@ const cognomeRegistrati = document.getElementById("cognomeRegistrati");
 const telefonoRegistrati = document.getElementById("telefonoRegistrati");
 const usernameRegistrati = document.getElementById("usernameRegistrati");
 const passwordRegistrati = document.getElementById("passwordRegistrati");
+const passwordConfRegistrati = document.getElementById("passwordConfRegistrati");
 
 const btnAccedi = document.getElementById("btnDivAccedi");
 const btnRegistrati = document.getElementById("btnDivRegistrati");
@@ -25,6 +26,8 @@ btnAccedi.onclick = () => {
       if (result.result === "ok") {
         console.log("Accesso riuscito");
         window.location.href = "home.html";
+        sessionStorage.setItem("username", credenziali.username);
+        sessionStorage.setItem("password", credenziali.password);
       } else {
         alert("Credenziali errate");
       }
@@ -33,22 +36,32 @@ btnAccedi.onclick = () => {
 
 
 btnRegistrati.onclick = () => {
+
+  if (passwordRegistrati.value == passwordConfRegistrati.value ) {
+
     const credenziali = {
-        "nome": nomeRegistrati.value,
-        "cognome": cognomeRegistrati.value,
-        "telefono": telefonoRegistrati.value,
-        "username": usernameRegistrati.value,
-        "password": passwordRegistrati.value
-    };
-    console.log(credenziali);
-    sendRegistrati(credenziali).then((result) => {
-        if (result.result === "ok") {
-          console.log("Accesso riuscito");
-          window.location.href = "home.html";
-        } else {
-            alert("Registrazione non riuscita, riprovare tra poco");
-        }
-    });
+      "nome": nomeRegistrati.value,
+      "cognome": cognomeRegistrati.value,
+      "telefono": telefonoRegistrati.value,
+      "username": usernameRegistrati.value,
+      "password": passwordRegistrati.value
+  };
+  console.log(credenziali);
+  sendRegistrati(credenziali).then((result) => {
+      if (result.result === "ok") {
+        console.log("Accesso riuscito");
+        window.location.href = "home.html";
+        sessionStorage.setItem("username", credenziali.username);
+        sessionStorage.setItem("password", credenziali.password);
+      } else {
+          alert("Registrazione non riuscita, riprovare tra poco");
+      }
+  });
+
+  } else {
+    alert("Controlla le due password, non sono uguali");
+  }
+    
 }
 //------------------------------------------------------------------------------------------
 //Funzione per mandare credenziali al server

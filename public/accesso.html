@@ -65,9 +65,11 @@
                 <input type="password" id="passwordAccedi" class="form-control">
 
                 <button type="button" class="btn btn-primary btn-sm mb-2 mt-2" id="btnDivAccedi"
-                    style="width: 100%;">Accedi  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
-                      </svg></button>
+                    style="width: 100%;">Accedi <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
+                    </svg></button>
             </div>
 
         </div>
@@ -112,14 +114,26 @@
                         data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
                 <input type="text" class="form-control" placeholder="" id="usernameRegistrati">
 
-                <label for="passwordRegistrati" class="mt-3 text-left">Password <span style="color:red"
-                        data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
-                <input type="password" id="passwordRegistrati" class="form-control">
-
+                <div class="row mb-2">
+                    <div class="col">
+                        <label for="passwordRegistrati" class="mt-3 text-left">Password <span style="color:red"
+                            data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
+                    <input type="password" id="passwordRegistrati" class="form-control">
+                    </div>
+                    <div class="col">
+                        <label for="passwordConfRegistrati" class="mt-3 text-left">Conferma <span style="color:red"
+                            data-bs-toggle="tooltip" data-bs-html="true" title="Campo obbligatorio">*</span></label>
+                    <input type="password" id="passwordConfRegistrati" class="form-control">
+                    </div>
+                </div>
+                
+        
                 <button type="button" class="btn btn-primary btn-sm mb-2 mt-2" id="btnDivRegistrati"
-                    style="width: 100%;">Registrati  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
-                      </svg></button>
+                    style="width: 100%;">Registrati <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
+                    </svg></button>
             </div>
 
 
@@ -155,7 +169,7 @@
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="app.js"></script>
-  <script src="index.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>
