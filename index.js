@@ -9,6 +9,27 @@ const mysql = require("mysql2");
 const conf = require("./conf.js");
 const connection = mysql.createConnection(conf);
 
+//MIGLIORIE CODICE
+//fare una valta getIdUtente e salvarlo nel sessionStorage, non usare il metodo tutte le volte
+
+
+//---------------------------------------------------------------------------------------------------
+//FUNZIONE PER ESEGUIRE QUERY SU DB
+const executeQuery = (sql) => {
+    return new Promise((resolve, reject) => {
+        connection.query(sql, function (err, result) {
+            if (err) {
+                console.error(err);
+                reject();
+            }
+            //se funziona stampo messaggio 
+            console.log('done');
+            resolve(result);
+        });
+    })
+}
+//FUNZIONA
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, '/public/immaginiCaricate'));
@@ -38,10 +59,22 @@ server.listen(80, () => {
 });
 
 const { Server } = require("socket.io");
+const { time } = require("console");
 const io = new Server(server);
 
 let usernameKeep = "";
 let passwordKeep = "";
+let idKeep = 2;
+
+const getIdUtente = (username) => {
+    const template = `
+SELECT id FROM NoteUtente WHERE username = '%USERNAME';
+   `;
+    const sql = template.replace("%USERNAME", username);
+    console.log("query get id con username: " + sql);
+
+    return executeQuery(sql);
+}
 //---------------------------------------------------------------------------------------------------
 //SERVIZI RICHIAMABILI
 
@@ -52,13 +85,20 @@ try {
         const username = req.body.username;
         const password = req.body.password;
         console.log(username + " - " + password);
-        usernameKeep = username;
-        passwordKeep = password;
         //richiamo metodo che controlla
         checkAccesso(username, password)
             //se esiste, restituisco ok altrimenti blocco
             .then((result) => {
                 if (result === true) {
+                    usernameKeep = username;
+                    passwordKeep = password;
+                    getIdUtente(username).then((result) => {
+                         idKeep = result[0].id; 
+                        console.log("id utente messo in idkeep:", idKeep);
+                    }).catch((error) => {
+                        console.error("Errore durante l'ottenimento dell'ID utente:", error);
+                    });
+
                     res.json({ result: "ok" });
                 } else {
                     res.status(401).json({ result: "Unauthorized" });
@@ -77,13 +117,19 @@ try {
         const username = req.body.username;
         const password = req.body.password;
         console.log(username + " - " + password);
-        usernameKeep = username;
-        passwordKeep = password;
         //richiamo metodo che controlla
         addRegistrazione(nome, cognome, telefono, username, password)
             //se esiste, restituisco ok altrimenti blocco
             .then((result) => {
                 if (result === true) {
+                    usernameKeep = username;
+                    passwordKeep = password;
+                    getIdUtente(username).then((result) => {
+                         idKeep = result[0].id; 
+                        console.log("Id utente messo in keep:", idKeep);
+                    }).catch((error) => {
+                        console.error("Errore durante l'ottenimento dell'ID utente:", error);
+                    });
                     res.json({ result: "ok" });
                 } else {
                     res.status(401).json({ result: "Unauthorized" });
@@ -168,7 +214,7 @@ try {
 
     app.post("/getAnnuncio", (req, res) => {
         const idAnnuncio = req.body.id;
-        
+
         // Assume che selectAnnuncio sia una funzione asincrona che ritorna una Promise
         selectAnnuncio(idAnnuncio)
             .then(result => {
@@ -181,7 +227,7 @@ try {
                 res.status(500).json({ error: "Errore durante la selezione dell'annuncio" });
             });
     });
-    
+
 
 
     app.post("/changeUsername", (req, res) => {
@@ -240,7 +286,7 @@ try {
                 res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
             });
     });
-    
+
 
     app.post('/upload', upload.single('file'), (req, res) => {
         if (!req.file) {
@@ -249,6 +295,35 @@ try {
 
         res.send('File caricato con successo.');
     });
+
+    app.post("/saveChat", (req, res) => {
+        const username = usernameKeep; // Ottieni l'username conservato
+        const idAnnuncio = req.body.idAnnuncio;
+        const idProprietario = req.body.idProprietario;
+
+        // Ottieni l'ID utente associato all'username
+        getIdUtente(username)
+            .then((response) => {
+                const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
+                console.log("ID utente:", idUtente);
+
+                //fare metodo per salvare la chat con parametri
+                changePassword(idUtente, passwordAttuale, password1, password2)
+                    .then((result) => {
+                        console.log("Password cambiata con successo");
+                        res.json({ success: true });
+                    })
+                    .catch((error) => {
+                        console.log("Errore nel cambio della password:", error);
+                        res.status(500).json({ error: "Errore nel cambio della password" });
+                    });
+            })
+            .catch((error) => {
+                console.log("Errore nel recupero dell'ID utente:", error);
+                res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
+            });
+    });
+
 
 
 
@@ -271,6 +346,7 @@ try {
                     //se maggiore di 0, QUINDI ESISTE UN UTENTE CON QUELLE CREDENZIALI, restituisco true
                     if (result.length > 0) {
                         resolve(true); // Utente esistente
+
                     } else {
                         //altrime FALSE, non esiste
                         resolve(false); // Credenziali non valide
@@ -310,7 +386,7 @@ try {
     const addAnnuncio = (nome, descrizione, prezzo, zona, stato) => {
         return new Promise((resolve, reject) => {
             const template = "INSERT INTO Annuncio (nome, descrizione, prezzo, zona, utenteId,  status) VALUES ('%NOME', '%DESCRIZIONE', '%PREZZO', '%ZONA', '%UTENTEID', '%STATO')";
-            const sql = template.replace("%NOME", nome).replace("%DESCRIZIONE", descrizione).replace("%PREZZO", prezzo).replace("%ZONA", zona).replace("%UTENTEID", "1").replace("%STATO", stato);
+            const sql = template.replace("%NOME", nome).replace("%DESCRIZIONE", descrizione).replace("%PREZZO", prezzo).replace("%ZONA", zona).replace("%UTENTEID", idKeep).replace("%STATO", stato);
             console.log("query creata: " + sql)
             return executeQuery(sql)
                 .then((result) => {
@@ -351,16 +427,6 @@ try {
         return executeQuery(sql);
     }
 
-    //FUNZIONA
-    const getIdUtente = (username) => {
-        const template = `
-    SELECT id FROM NoteUtente WHERE username = '%USERNAME';
-       `;
-        const sql = template.replace("%USERNAME", username);
-        console.log("query get id con username: " + sql);
-
-        return executeQuery(sql);
-    }
 
     //FUNZIONA
     const changeUsername = (username, idUtente) => {
@@ -442,59 +508,69 @@ try {
     console.log(e);
 }
 
-//---------------------------------------------------------------------------------------------------
-//FUNZIONE PER ESEGUIRE QUERY SU DB
-const executeQuery = (sql) => {
-    return new Promise((resolve, reject) => {
-        connection.query(sql, function (err, result) {
-            if (err) {
-                console.error(err);
-                reject();
-            }
-            //se funziona stampo messaggio 
-            console.log('done');
-            resolve(result);
-        });
-    })
-}
+
 //---------------------------------------------------------------------------------------------------
 //SERVIZI ROOM CHAT con socket
+let chats = [];
+let messaggi = [];
 
+io.on('connection', (socket) => {
+    console.log('Client connected');
 
-//per connessione tra i due provare con url, premo sul bottone e la url si modifica con //public/home.html#2, il numero rappresenta l'id del annuncio, mettere id nell annuncio 
+    //prendere tutti i messaggi da db e emittarli
+    //socket.emit('messageHistory', messages);
 
-io.on("connection", (socket) => {
-    console.log("a user connected");
-  
     // Unisciti a una room specifica
     socket.on("join room", (room) => {
-      socket.join(room);
-      console.log(`User joined room: ${room}`);
-      // Se la chat non esiste ancora, la creiamo
-      if (!chats.find((chat) => chat.chat === room)) {
-        chats.push({ chat: room, messaggi: [] });
-      }
+        socket.join(room);
+        console.log(`User joined room: ${room}`);
+        // Se la chat non esiste ancora, la creiamo
+        if (!chats.find((chat) => chat.chat === room)) {
+            chats.push({ chat: room, messaggi: [] });
+        }
     });
-  
-    // Ascolta i messaggi di chat e li trasmette a tutti nella stessa room
+
+
     socket.on("chat message", (room, { username, message, timestamp }) => {
-      io.to(room).emit("chat message", { username, message, timestamp }); // Trasmetti l'username e il messaggio
-      let chat = chats.find((chat) => chat.chat === room);
-      if (chat) {
-        chat.messaggi.push({
-          autore: username,
-          ora: timestamp,
-          messaggio: message,
-        });
-      }
-  
-      console.log(chats);
+        io.to(room).emit("chat message", { username, message, timestamp }); // Trasmetti l'username e il messaggio
+        let chat = chats.find((chat) => chat.chat === room);
+        if (chat) {
+            chat.messaggi.push({
+                autore: username,
+                ora: timestamp,
+                messaggio: message,
+            });
+
+            /*
+                  getIdUtente(username)
+                        .then((response) => {
+                            const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
+                            console.log("ID utente:", idUtente);
+            
+                            salvaMessaggio(message,timestamp, idUtente, room);
+                
+                        })
+                        .catch((error) => {
+                            console.log("Errore nel recupero dell'ID utente:", error);
+                            res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
+                        });
+                        */
+        }
+
+        console.log(chats);
     });
-  
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
     });
-  
-    socket.on("message", (data) => {});
-  });
-  
+});
+
+
+const salvaMessaggio = (testo, data, idUtente, idChat) => {
+    const template = "INSERT INTO Messaggi (testo, data, idUtente, idChat) VALUES ('%TESTO', '%DATA', '%IDUTENTE', '%IDCHAT');"
+    const sql = template.replace("%TESTO", testo).replace("%DATA", data).replace("%IDUTENTE", idUtente).replace("%IDCHAT", idChat);
+    console.log("queri invia messaggio: " + sql);
+
+    return executeQuery(sql);
+}
+
