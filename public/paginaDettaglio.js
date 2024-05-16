@@ -2,17 +2,23 @@ const socket = io();
 const divDettaglio = document.getElementById("renderDettaglio");
 
 window.onload = () => {
+
   const url = window.location.href;
-  const arrayUrl = url.split('#');
-  let id = arrayUrl[arrayUrl.length - 1];
-  if (arrayUrl[0] === "#") {
-    id = arrayUrl[arrayUrl.length - 1];
-  }
-  console.log("id pagina: " + id);
+  const hashIndex = url.indexOf('#');
+  const hashString = hashIndex !== -1 ? url.substring(hashIndex + 1) : ''; // Ottieni la stringa dopo il carattere '#'
+  
+  const idValues = {};
+  const idArray = hashString.split('-');
+  idValues.idAnnuncio = idArray[0];
+  idValues.idAcquirente = idArray[1];
+  idValues.idProprietario = idArray[2];
+  
+  console.log("Dizionario degli ID: ", idValues);
+
   divDettaglio.innerHTML = "";
 
   const idDaInviare = {
-    "id": id
+    "id": idValues.idAnnuncio
   };
 
   prendiAnnuncio(idDaInviare)
@@ -31,7 +37,9 @@ window.onload = () => {
           console.log("id definito bottone premuto: " + idDef);
           sessionStorage.setItem("idPagCorr", idDef);
 
-          joinRoom(sessionStorage.getItem("idPagCorr"));
+          const idRoomComposta = idValues.idAnnuncio + "-" + idValues.idAcquirente + "-" + idValues.idProprietario;
+          joinRoom(idRoomComposta);
+          saveChat(idValues);
 
           const buttonInvio = document.getElementById("invioMessaggio");
 
@@ -51,7 +59,7 @@ window.onload = () => {
             });
             const messageInput = document.getElementById('inputMesaggio');
             const message = messageInput.value;
-            socket.emit("chat message", sessionStorage.getItem("idPagCorr"), {
+            socket.emit("chat message", idRoomComposta, {
               username: usernameSession,
               message: message,
               timestamp: timestamp,
@@ -73,6 +81,22 @@ const prendiAnnuncio = (ricerca) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(ricerca),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        resolve(json);
+      });
+  });
+};
+
+const saveChat = (infoChat) => {
+  return new Promise((resolve, reject) => {
+    fetch("/saveChat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(infoChat),
     })
       .then((response) => response.json())
       .then((json) => {

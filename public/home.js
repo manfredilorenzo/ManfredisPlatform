@@ -6,6 +6,8 @@ const invioBarraDiRicerca = document.getElementById("invioBarraDiRicerca");
 const btnGoProfilo = document.getElementById("btnGoProfilo");
 
 
+console.log("id preso dalla sessione: ");
+console.log(sessionStorage.getItem("idAccount"));
 
 invioBarraDiRicerca.onclick = () => {
   divRisultati.innerHTML=" ";
@@ -68,7 +70,7 @@ const renderAnn = (dati) => {
       .replace('%PERCORSO', "immaginiCaricate/" + dati[i].nome + ".jpg")
       .replace('%TITOLO', dati[i].nome)
       .replace('%PREZZO', dati[i].prezzo + " €")
-      .replace('%URLPAGINA', "paginaDettaglio.html" + "#" + dati[i].id);
+      .replace('%URLPAGINA', "paginaDettaglio.html" + "#" + dati[i].id + "-" + sessionStorage.getItem("idAccount") + "-" + dati[i].utenteId);
 
     // Aggiungo il template al DOM
     divRisultati.innerHTML += cardHTML;

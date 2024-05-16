@@ -12,7 +12,6 @@ const connection = mysql.createConnection(conf);
 //MIGLIORIE CODICE
 //fare una valta getIdUtente e salvarlo nel sessionStorage, non usare il metodo tutte le volte
 
-
 //---------------------------------------------------------------------------------------------------
 //FUNZIONE PER ESEGUIRE QUERY SU DB
 const executeQuery = (sql) => {
@@ -28,8 +27,8 @@ const executeQuery = (sql) => {
         });
     })
 }
-//FUNZIONA
 
+//FUNZIONA
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, '/public/immaginiCaricate'));
@@ -50,7 +49,6 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", express.static(path.join(__dirname, "public")));
-
 
 
 const server = http.createServer(app);
@@ -139,6 +137,17 @@ try {
                 console.error(error);
                 res.status(500).json({ result: "Internal Server Error" });
             });
+    });
+
+
+    app.get('/getId', (req, res) => {
+        getIdUtente(usernameKeep).then((result) => {
+            console.log(result[0].id);
+            res.json(result[0].id); 
+          
+       }).catch((error) => {
+           console.error("Errore durante l'ottenimento dell'ID utente:", error);
+       });
     });
 
     app.post("/ricercaAnnunci", (req, res) => {
@@ -261,19 +270,12 @@ try {
 
     //NON FUNZIONANTE
     app.post("/saveChat", (req, res) => {
-        const username = usernameKeep;
         const idAnnuncio = req.body.idAnnuncio;
+        const idAcquirente = req.body.idAcquirente;
         const idProprietario = req.body.idProprietario;
-        getIdUtente(username)
-            .then((response) => {
-                const idUtente = response[0].id; // Ottieni l'ID utente dalla risposta
-                console.log("ID utente:", idUtente);
-            
-            })
-            .catch((error) => {
-                console.log("Errore nel recupero dell'ID utente:", error);
-                res.status(500).json({ error: "Errore nel recupero dell'ID utente" });
-            });
+
+        insertNewChat(idAnnuncio,idAcquirente,idProprietario);
+        
     });
 
 
@@ -388,6 +390,13 @@ try {
         const sql = template.replace("%NUOVOUSER", username).replace("%UTENTEID", idUtente);
         console.log("query cambio username: " + sql);
 
+        return executeQuery(sql);
+    }
+
+    const insertNewChat = (idAnnuncio, idAcquirente, idProprietario) => {
+        const template = "INSERT INTO Chat (idAnnuncio, idAcquirente, idProprietario) VALUES ('%IDANN', '%IDACQ', '%IDPRO');";
+        const sql = template.replace("%IDANN", idAnnuncio).replace("%IDACQ", idAcquirente).replace("%IDPRO", idProprietario);
+        console.log("query new chat: " + sql);
         return executeQuery(sql);
     }
 
