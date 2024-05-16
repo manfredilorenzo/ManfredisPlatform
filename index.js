@@ -270,14 +270,41 @@ try {
 
     //NON FUNZIONANTE
     app.post("/saveChat", (req, res) => {
+        const idRoom = req.body.idComposto
         const idAnnuncio = req.body.idAnnuncio;
         const idAcquirente = req.body.idAcquirente;
         const idProprietario = req.body.idProprietario;
 
-        insertNewChat(idAnnuncio,idAcquirente,idProprietario);
+        insertNewChat(idRoom,idAnnuncio,idAcquirente,idProprietario);
         
     });
 
+
+    //per fare contorllo che non sia già presente una chat per quel annuncio quel acquirente e quel proprietario.
+    //DA IMPLEMENTARE
+    app.get("/getAllChat", (req, res) => {
+        
+                getAllChat(idKeep)
+                    .then((chat) => {
+                        console.log("Chat trovate:", chat);
+                        // Invia gli annunci al client
+                        res.json({ chat: chat });
+                    })
+                    .catch((error) => {
+                        console.log("Errore nel recupero degli annunci:", error);
+                        res.status(500).json({ error: "Errore nel recupero degli annunci" });
+                    });
+    });
+
+
+    const getAllChat = (idAcquirente) => {
+
+        const template = "SELECT * FROM Chat WHERE idAquirente = '%IDACQ'; ";
+        const sql = template.replace("%IDACQ", idAcquirente);
+        console.log("query prendi tutte le chat per id acquirente: " + sql);
+
+        return executeQuery(sql);
+    }
 
 
 
@@ -393,9 +420,9 @@ try {
         return executeQuery(sql);
     }
 
-    const insertNewChat = (idAnnuncio, idAcquirente, idProprietario) => {
-        const template = "INSERT INTO Chat (idAnnuncio, idAcquirente, idProprietario) VALUES ('%IDANN', '%IDACQ', '%IDPRO');";
-        const sql = template.replace("%IDANN", idAnnuncio).replace("%IDACQ", idAcquirente).replace("%IDPRO", idProprietario);
+    const insertNewChat = (idRoom, idAnnuncio, idAcquirente, idProprietario) => {
+        const template = "INSERT INTO Chat (id, idAnnuncio, idAcquirente, idProprietario) VALUES ('%IDROOM', '%IDANN', '%IDACQ', '%IDPRO');";
+        const sql = template.replace("%IDROOM", idRoom).replace("%IDANN", idAnnuncio).replace("%IDACQ", idAcquirente).replace("%IDPRO", idProprietario);
         console.log("query new chat: " + sql);
         return executeQuery(sql);
     }
@@ -501,7 +528,7 @@ io.on('connection', (socket) => {
                 ora: timestamp,
                 messaggio: message,
             });
-           //salvaMessaggio(message,timestamp, idKeep, room);  
+           salvaMessaggio(message,timestamp, idKeep, room);  
         }
 
         console.log(chats);

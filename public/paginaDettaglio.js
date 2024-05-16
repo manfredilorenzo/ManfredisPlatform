@@ -39,6 +39,7 @@ window.onload = () => {
 
           const idRoomComposta = idValues.idAnnuncio + "-" + idValues.idAcquirente + "-" + idValues.idProprietario;
           joinRoom(idRoomComposta);
+          idValues.idComposto = idRoomComposta;
           saveChat(idValues);
 
           const buttonInvio = document.getElementById("invioMessaggio");
