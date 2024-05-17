@@ -29,6 +29,20 @@ formRicerca.addEventListener('submit', (event) => {
   });
 });
 
+invioBarraDiRicerca.onclick = () => {
+  divRisultati.innerHTML = "";
+  const ricerca = {
+    "ricerca": barraDiRicerca.value
+  };
+
+  sendRicerca(ricerca).then((result) => {
+    renderAnn(result);
+    console.log("annunci trovati: ");
+    console.log(result);
+    console.log("----------------------------");
+  });
+}
+
 
 const sendRicerca = (ricerca) => {
   return new Promise((resolve, reject) => {
@@ -76,8 +90,7 @@ const renderAnn = (dati) => {
       .replace('%PERCORSO', "immaginiCaricate/" + dati[i].nome + ".jpg")
       .replace('%TITOLO', dati[i].nome)
       .replace('%PREZZO', dati[i].prezzo + " €")
-      .replace('%URLPAGINA', "paginaDettaglio.html" + "#" + dati[i].id + "-" + sessionStorage.getItem("idAccount") + "-" + dati[i].utenteId);
-
+      .replace('%URLPAGINA', "paginaDettaglio.html" + "#" + dati[i].id + "-" + sessionStorage.getItem("idAccount") + "-" + dati[i].utenteId);     
     // Aggiungo il template al DOM
     divRisultati.innerHTML += cardHTML;
   }

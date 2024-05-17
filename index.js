@@ -221,6 +221,22 @@ try {
             });
     });
 
+    app.post("/changeStatus", (req, res) => {
+        const idAnnuncio = req.body.idAnnuncio;
+        const nuovoStatus = req.body.nuovoStatus;
+
+        updateStatus(idAnnuncio,nuovoStatus)
+            .then(result => {
+                console.log(result);
+                //res.json({ annuncio: result }); 
+            })
+            .catch(error => {
+                console.error("Errore durante il cambio dello stato:", error);
+                res.status(500).json({ error: "Errore durante il cambio dello stato" });
+            });
+    });
+
+
 
 
     app.post("/changeUsername", (req, res) => {
@@ -424,6 +440,13 @@ try {
         const template = "INSERT INTO Chat (id, idAnnuncio, idAcquirente, idProprietario) VALUES ('%IDROOM', '%IDANN', '%IDACQ', '%IDPRO');";
         const sql = template.replace("%IDROOM", idRoom).replace("%IDANN", idAnnuncio).replace("%IDACQ", idAcquirente).replace("%IDPRO", idProprietario);
         console.log("query new chat: " + sql);
+        return executeQuery(sql);
+    }
+
+    const updateStatus = (idAnnuncio, nuovoStatus) => {
+        const template = "UPDATE Annuncio SET status = '%NUOVOSTAT' WHERE id = '%ID';"
+        const sql = template.replace("%NUOVOSTAT", nuovoStatus).replace("%ID", idAnnuncio);
+        console.log("query per aggiorno stato: " + sql);
         return executeQuery(sql);
     }
 

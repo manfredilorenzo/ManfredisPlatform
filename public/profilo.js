@@ -128,27 +128,63 @@ pubblicaAnnuncio.onclick = () => {
     });
   };
 
+  const updateStatus = (newPass) => {
+    return new Promise((resolve, reject) => {
+      fetch("/changeStatus", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPass),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          resolve(json);
+        });
+    });
+  };
+
 
 
   //template annuncio 
   const templateAnnuncio = `
-  <div class="border mt-5 " style="width: 100%; height: 250px; border-radius:5px">
-  <div class="row">
-      <div class="col-3">
-          <div class="border" style="width: 200px; height: 200px; margin-top: 20px; margin-left: 20px;">
-              <img src="%PERCORSO" style="width:200px; height:200px">
-          </div>
-      </div>
-      <div class="col" style="margin-top: 20px;">
-          <p class="text-white"><strong>Nome: </strong>%NOME</p>
-          <p class="text-white"><strong>Descrizione: </strong>%DESCRIZIONE</p>
-          <p class="text-white"><strong>Prezzo: </strong>%PREZZO €</p>
-      </div>
-      <div class="col" style="margin-top: 20px;">
-          <p class="text-white"><strong>Zona: </strong>%ZONA</p>
-          <p class="text-white"><strong>Stato: </strong>%STATO</p>
-      </div>
-  </div>
+  <div class="border mt-5" style="width: 100%; height: 250px; border-radius:5px">
+    <div class="row">
+        <div class="col-3">
+            <div class="border" style="width: 200px; height: 200px; margin-top: 20px; margin-left: 20px;">
+                <img src="%PERCORSO" style="width: 200px; height: 200px;">
+            </div>
+        </div>
+        <div class="col" style="margin-top: 20px;">
+            <p class="text-white"><strong>Nome: </strong>%NOME</p>
+            <p class="text-white"><strong>Descrizione: </strong>%DESCRIZIONE</p>
+            <p class="text-white"><strong>Prezzo: </strong>%PREZZO €</p>
+        </div>
+        <div class="col" style="margin-top: 20px;">
+            <p class="text-white"><strong>Zona: </strong>%ZONA</p>
+            <p class="text-white"><strong>Stato: </strong>%STATO</p>
+            <div class="form-group">
+                <label for="status" class="text-white"><strong>Modifica stato:</strong></label>
+                <div class="row">
+                    <div class="col-8">
+                        <select class="form-control" id="%INPUTUPD">
+                            <option value="disponibile">Disponibile</option>
+                            <option value="venduto">Venduto</option>
+                            <option value="in_sospeso">In sospeso</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btnUpdate" id="%UPDATE">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 `;
 
@@ -160,7 +196,9 @@ const render = (annunci) => {
       .replace("%DESCRIZIONE", annuncio.descrizione)
       .replace("%PREZZO", annuncio.prezzo)
       .replace("%ZONA", annuncio.zona)
-      .replace("%STATO", annuncio.status);
+      .replace("%STATO", annuncio.status)
+      .replace("%UPDATE", "update" + annuncio.id)
+      .replace("%INPUTUPD", "inputUpdate" + annuncio.id);
 
     try {
      //provo con jpg
@@ -184,6 +222,26 @@ const getAnnunci = () => {
       console.log("Dati ricevuti:", json.annunci); // stampo in console
       divAnnunci.innerHTML = " ";
       render(json.annunci); // richiamo render con dati
+
+      const allBottoniAdd = document.querySelectorAll('.btnUpdate');
+
+    allBottoniAdd.forEach(function (bottone) {
+      bottone.addEventListener('click', function () {
+        let idBottone = bottone.id;
+        console.log("ID del bottone: " + idBottone);
+        const idUpdate = idBottone.replace("update", "");
+        console.log("id definito bottone premuto cambio stato: " + idUpdate);
+        const inputStato = document.getElementById("inputUpdate"+ idUpdate);
+        const info = {
+          "idAnnuncio": idUpdate,
+          "nuovoStatus": inputStato.value 
+        }
+        updateStatus(info);
+        window.location.reload()
+        inputStato.value="";
+        
+      });
+    });
     })
     .catch((error) => {
       console.error('Errore durante il recupero degli annunci:', error);
@@ -230,3 +288,4 @@ function caricaFile() {
     alert('Si è verificato un errore durante il caricamento del file.');
   });
 }
+
