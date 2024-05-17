@@ -6,13 +6,13 @@ window.onload = () => {
   const url = window.location.href;
   const hashIndex = url.indexOf('#');
   const hashString = hashIndex !== -1 ? url.substring(hashIndex + 1) : ''; // Ottieni la stringa dopo il carattere '#'
-  
+
   const idValues = {};
   const idArray = hashString.split('-');
   idValues.idAnnuncio = idArray[0];
   idValues.idAcquirente = idArray[1];
   idValues.idProprietario = idArray[2];
-  
+
   console.log("Dizionario degli ID: ", idValues);
 
   divDettaglio.innerHTML = "";
@@ -49,7 +49,12 @@ window.onload = () => {
 
 
 
-          buttonInvio.onclick = () => {
+          const form = document.getElementById('formInput');
+
+          form.addEventListener('submit', (event) => {
+            // Prevenire il comportamento predefinito del form
+            event.preventDefault();
+
             console.log("entrato");
             const timestamp = new Date().toLocaleString("it-IT", {
               year: "2-digit",
@@ -60,14 +65,18 @@ window.onload = () => {
             });
             const messageInput = document.getElementById('inputMesaggio');
             const message = messageInput.value;
+
+            // Supponendo che idRoomComposta e usernameSession siano già definiti
             socket.emit("chat message", idRoomComposta, {
               username: usernameSession,
               message: message,
               timestamp: timestamp,
             });
-            messageInput.value="";
+
+            // Svuotare il campo di input
+            messageInput.value = "";
             console.log("finito");
-          }
+          });
         });
       });
     });
@@ -108,60 +117,68 @@ const saveChat = (infoChat) => {
 
 
 const templateCard = `
- 
-  <h1 style="font-size: 55px;">%NOME</h1>
-  <div class="row">
-    <div class="col">
-      <img src="%IMMAGINE" alt="immagine annuncio" style="width: 700px; height: 700px; object-fit: cover;">
-    </div>
-    <div class="col">
-      <p class="mt-4" style="text-align: justify;">%DESCRIZIONE</p>
-      <hr class="bg-white"> 
-      <div class="row">
-        <div class="col" style="border-right: solid white 1px;">
-          <h3>Prezzo: </h3>
-          <p style="font-size: 25px;">%PREZZO</p>
-        </div>
-        <div class="col" style="border-right: solid white 1px;">
-          <h3>Zona:</h3>
-          <p style="font-size: 25px;">%ZONA</p>
-        </div>
-        <div class="col" >
-          <h3>Stato:</h3>
-          <p style="font-size: 25px;">%STATO</p>
-        </div>
-      </div>
-      <button type="button" class="btn btn-primary bottoneDettaglio" id="%IDBOTTONE" data-bs-toggle="modal" data-bs-target="#chat">Invia un messaggio</button>
-    </div>
+<h1 style="font-size: 55px;">%NOME</h1>
+<div class="row">
+  <div class="col">
+    <img src="%IMMAGINE" alt="immagine annuncio" style="width: 700px; height: 700px; object-fit: cover;">
   </div>
+  <div class="col">
+    <p class="mt-4" style="text-align: justify;">%DESCRIZIONE</p>
+    <hr class="bg-white">
+    <div class="row">
+      <div class="col" style="border-right: solid white 1px;">
+        <h3>Prezzo:</h3>
+        <p style="font-size: 25px;">%PREZZO</p>
+      </div>
+      <div class="col" style="border-right: solid white 1px;">
+        <h3>Zona:</h3>
+        <p style="font-size: 25px;">%ZONA</p>
+      </div>
+      <div class="col">
+        <h3>Stato:</h3>
+        <p style="font-size: 25px;">%STATO</p>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary bottoneDettaglio" id="%IDBOTTONE" data-bs-toggle="modal" data-bs-target="#chat">Invia un messaggio</button>
+  </div>
+</div>
 
-
-  <div class="modal fade modal-bottom-up" id="chat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-dark"  id="titoloRoom">%NOME</h5>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div style="height: 500px;" id="" class="container">  
-          <p>-- Rircodarti di portare sempre rispetto --</p>
+<div class="modal fade modal-bottom-up" id="chat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="titoloRoom">%NOME</h5>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="height: 500px;" id="" class="container">
+          <p>-- Ricordati di portare sempre rispetto --</p>
           <ul id="messaggiChat" class="text-dark">
           </ul>
-          </div>
-        </div>
-        <div class="modal-footer">
-          
-          <input type="text" class="form-control" id="inputMesaggio" style="width: 80%;" placeholder="scrivi il tuo messaggio...">
-           <button type="submit" id="invioMessaggio" class="btn btn-primary "><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16" style="display: flex; align-items: center; justify-content: center; " >
-            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
-          </svg></button>
         </div>
       </div>
+      <div class="modal-footer">
+        <form id="formInput" style="width: 100%;">
+          <div class="row" style="width: 100%; display: flex;">
+            <div class="col" style="flex-grow: 1;">
+              <input type="text" class="form-control" id="inputMesaggio" style="width: 100%;" placeholder="scrivi il tuo messaggio...">
+            </div>
+          <div class="col-auto">
+              <button type="submit" id="invioMessaggio" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16" style="display: flex; align-items: center; justify-content: center;">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                </svg>
+              </button>
+          </div>
+        </div>
+      </form>
+      </div>
     </div>
-  </div>       
+  </div>
+</div>
+
   `;
 
 const renderAnn = (dati) => {
@@ -186,10 +203,10 @@ const renderAnn = (dati) => {
 socket.on('chat message', (data) => {
   const messages = document.getElementById('messaggiChat');
   const li = document.createElement('li');
-  li.textContent = "[" + data.timestamp + "]" + " " +  data.username + ": " + data.message;
-  messages.appendChild(li); 
-  window.scrollTo(0, document.body.scrollHeight); 
-  document.getElementById('inputMesaggio').value = ''; 
+  li.textContent = "[" + data.timestamp + "]" + " " + data.username + ": " + data.message;
+  messages.appendChild(li);
+  window.scrollTo(0, document.body.scrollHeight);
+  document.getElementById('inputMesaggio').value = '';
 });
 
 const joinRoom = (idRoom) => {

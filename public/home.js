@@ -5,23 +5,29 @@ const invioBarraDiRicerca = document.getElementById("invioBarraDiRicerca");
 
 const btnGoProfilo = document.getElementById("btnGoProfilo");
 
+const formRicerca = document.getElementById("formRicerca");
+
 
 console.log("id preso dalla sessione: ");
 console.log(sessionStorage.getItem("idAccount"));
 
-invioBarraDiRicerca.onclick = () => {
-  divRisultati.innerHTML=" ";
+
+
+formRicerca.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  divRisultati.innerHTML = "";
   const ricerca = {
     "ricerca": barraDiRicerca.value
   };
+
   sendRicerca(ricerca).then((result) => {
     renderAnn(result);
     console.log("annunci trovati: ");
     console.log(result);
     console.log("----------------------------");
-  })
-}
-
+  });
+});
 
 
 const sendRicerca = (ricerca) => {
