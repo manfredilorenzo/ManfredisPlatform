@@ -53,7 +53,7 @@ app.use("/", express.static(path.join(__dirname, "public")));
 
 const server = http.createServer(app);
 server.listen(80, () => {
-    console.log("- server running");
+    console.log("- server running on port:80");
 });
 
 const { Server } = require("socket.io");
