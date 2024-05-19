@@ -284,16 +284,39 @@ try {
         res.send('File caricato con successo.');
     });
 
-    //NON FUNZIONANTE
+    //se chat già esistente non fa nulla, altrimenti salva
     app.post("/saveChat", (req, res) => {
-        const idRoom = req.body.idComposto
+        const idRoom = req.body.idComposto;
         const idAnnuncio = req.body.idAnnuncio;
         const idAcquirente = req.body.idAcquirente;
         const idProprietario = req.body.idProprietario;
+    
+        const template = "SELECT id FROM Chat WHERE id = '%ID'";
+        const sql = template.replace("%ID", idRoom);
+    
+        executeQuery(sql)
+            .then(result => {
+                if (result.length > 0) {
+                    res.json("esistente");
+                    getAllMessages(idRoom);
 
-        insertNewChat(idRoom,idAnnuncio,idAcquirente,idProprietario);
-        
+                } else {
+                    insertNewChat(idRoom, idAnnuncio, idAcquirente, idProprietario)
+                        .then(() => {
+                            res.json("Chat salvata con successo");
+                        })
+                        .catch(error => {
+                            console.error("Errore durante l'inserimento della chat", error);
+                            res.status(500).json("Errore del server durante l'inserimento");
+                        });
+                }
+            })
+            .catch(error => {
+                console.error("Errore durante l'esecuzione della query", error);
+                res.status(500).json("Errore del server durante la query");
+            });
     });
+    
 
 
     //per fare contorllo che non sia già presente una chat per quel annuncio quel acquirente e quel proprietario.
@@ -517,6 +540,27 @@ try {
 } catch (e) {
     console.log("Errore");
     console.log(e);
+}
+
+//FUNZIONA
+const getAllMessages = (idRoom) => {
+    const template = "SELECT * FROM Messaggi WHERE idChat = '%ID'";
+    const sql = template.replace("%ID", idRoom);
+
+    executeQuery(sql)
+        .then(messages => {
+           console.log(messages);
+           messages.forEach(messaggio => {      
+                let username = usernameKeep;
+                let message = messaggio.testo;
+                let timestamp = messaggio.data;
+                io.to(idRoom).emit("chat message", { username, message, timestamp }); // Trasmetti l'username e il messaggio
+          
+        });
+        })
+        .catch(error => {
+            console.error("Errore durante il recupero dei messaggi", error);
+        });
 }
 
 
