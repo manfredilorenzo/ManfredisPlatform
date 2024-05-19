@@ -8,11 +8,8 @@ const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 const conf = require("./conf.js");
 const connection = mysql.createConnection(conf);
-
-//MIGLIORIE CODICE
-//fare una valta getIdUtente e salvarlo nel sessionStorage, non usare il metodo tutte le volte
-
 //---------------------------------------------------------------------------------------------------
+
 //FUNZIONE PER ESEGUIRE QUERY SU DB
 const executeQuery = (sql) => {
     return new Promise((resolve, reject) => {
@@ -76,7 +73,7 @@ SELECT id FROM NoteUtente WHERE username = '%USERNAME';
 //---------------------------------------------------------------------------------------------------
 //SERVIZI RICHIAMABILI
 
-try {
+
     //SERVIZIO DI LOGIN e di ACCESSO
     app.post("/accedi", (req, res) => {
         //preno credenziali da richiesta
@@ -163,7 +160,6 @@ try {
                 res.json(result);
             })
             .catch((error) => {
-                // Gestisci eventuali errori
                 console.error("Errore durante la ricerca degli annunci:", error);
                 res.status(500).send("Errore durante la ricerca degli annunci");
             });
@@ -318,9 +314,6 @@ try {
     });
     
 
-
-    //per fare contorllo che non sia già presente una chat per quel annuncio quel acquirente e quel proprietario.
-    //DA IMPLEMENTARE
     app.get("/getAllChat", (req, res) => {
         
                 getAllChat(idKeep)
@@ -527,7 +520,7 @@ try {
             console.log("query ricerca annuncio: " + sql);
 
 
-            // Esegui la query con i parametri del database
+            // Esegui la query 
             executeQuery(sql)
                 .then((result) => {
                     resolve(result);
@@ -537,10 +530,6 @@ try {
                 });
         });
     };
-} catch (e) {
-    console.log("Errore");
-    console.log(e);
-}
 
 //FUNZIONA
 const getAllMessages = (idRoom) => {

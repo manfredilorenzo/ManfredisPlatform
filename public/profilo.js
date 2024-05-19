@@ -14,7 +14,7 @@ const btnSalvaNuovoUsername = document.getElementById ("btnSalvaNuovoUsername");
 
 const passwordattuale = document.getElementById("passwordAttuale");
 const nuovaPassword1 = document.getElementById("nuovaPassword1");
-const nuovaPassword2 = document.getElementById("nuovaPassword1");
+const nuovaPassword2 = document.getElementById("nuovaPassword2");
 const btnSalvaNuovaPassword = document.getElementById("btnSalvaNuovaPassword");
 
 
@@ -29,6 +29,9 @@ btnSalvaNuovaPassword.onclick = () => {
       alert("Password cambiata con successo.")
       document.getElementById("divCambioPassword").classList.remove("mostra");
       document.getElementById("divCambioPassword").classList.add("nascondi");
+      passwordattuale.value="";
+      nuovaPassword1.value="";
+      nuovaPassword2.value="";
 
     } else {
         alert("Cambio username non riscito, riprovare tra poco");
@@ -43,6 +46,7 @@ btnSalvaNuovoUsername.onclick = () => {
       alert("Username cambiato con successo.")
       document.getElementById("divCambioUsername").classList.remove("mostra");
       document.getElementById("divCambioUsername").classList.add("nascondi");
+      nuovoUsername.value="";
 
     } else {
         alert("Cambio username non riscito, riprovare tra poco");
