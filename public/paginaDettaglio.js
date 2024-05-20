@@ -116,33 +116,40 @@ const saveChat = (infoChat) => {
 };
 
 
+//bottoneDettaglio
 const templateCard = `
-<h1 style="font-size: 55px;">%NOME</h1>
+<h1 class="display-3 text-center my-4" style="font-size: 55px;">%NOME</h1>
+
 <div class="row">
-  <div class="col">
-    <img src="%IMMAGINE" alt="immagine annuncio" style="width: 700px; height: 700px; object-fit: cover;">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <img src="%IMMAGINE" alt="immagine annuncio" class="card-img-top img-fluid rounded" style="height: 700px; object-fit: cover;">
+    </div>
   </div>
-  <div class="col">
-    <p class="mt-4" style="text-align: justify;">%DESCRIZIONE</p>
-    <hr class="bg-white">
-    <div class="row">
-      <div class="col" style="border-right: solid white 1px;">
-        <h3>Prezzo:</h3>
-        <p style="font-size: 25px;">%PREZZO</p>
+  <div class="col-md-6">
+    <div class="card shadow-sm p-4">
+      <p class="mt-4" style="text-align: justify;">%DESCRIZIONE</p>
+      <hr>
+      <div class="row text-center">
+        <div class="col-md-4" style="border-right: solid white 1px;">
+          <h3>Prezzo:</h3>
+          <p style="font-size: 25px;">%PREZZO </p>
+        </div>
+        <div class="col-md-4" style="border-right: solid white 1px;">
+          <h3>Zona:</h3>
+          <p style="font-size: 25px;">%ZONA</p>
+        </div>
+        <div class="col-md-4">
+          <h3>Stato:</h3>
+          <p style="font-size: 25px;">%STATO</p>
+        </div>
       </div>
-      <div class="col" style="border-right: solid white 1px;">
-        <h3>Zona:</h3>
-        <p style="font-size: 25px;">%ZONA</p>
-      </div>
-      <div class="col">
-        <h3>Stato:</h3>
-        <p style="font-size: 25px;">%STATO</p>
+      <div class="text-center mt-4">
+        <button type="button" class="btn btn-primary btn-lg bottoneDettaglio" id="%IDBOTTONE" data-bs-toggle="modal" data-bs-target="#chat">Invia un messaggio</button>
       </div>
     </div>
-    <button type="button" class="btn btn-primary bottoneDettaglio" id="%IDBOTTONE" data-bs-toggle="modal" data-bs-target="#chat">Invia un messaggio</button>
   </div>
 </div>
-
 <div class="modal fade modal-bottom-up" id="chat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

@@ -80,6 +80,11 @@ pubblicaAnnuncio.onclick = () => {
             alert("Pubblicazione non riuscita, riprovare tra poco");
         }
     });
+    nomeAnnuncio.value="";
+    descrizioneAnnuncio.value="";
+    prezzoAnnuncio.value="";
+    zonaAnnuncio.value="";
+    statoAnnuncio.value="";
 
 }
   
@@ -152,44 +157,47 @@ pubblicaAnnuncio.onclick = () => {
 
   //template annuncio 
   const templateAnnuncio = `
-  <div class="border mt-5" style="width: 100%; height: 250px; border-radius:5px">
-    <div class="row">
-        <div class="col-3">
-            <div class="border" style="width: 200px; height: 200px; margin-top: 20px; margin-left: 20px;">
-                <img src="%PERCORSO" style="width: 200px; height: 200px;">
+  <div class="card mt-5" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden;">
+    <div class="row no-gutters">
+        <div class="col-md-3">
+            <div class="card-img" style="margin: 20px;">
+                <img src="%PERCORSO" class="img-fluid rounded" style="width: 200px; height: 200px; object-fit: cover;">
             </div>
         </div>
-        <div class="col" style="margin-top: 20px;">
-            <p class="text-white"><strong>Nome: </strong>%NOME</p>
-            <p class="text-white"><strong>Descrizione: </strong>%DESCRIZIONE</p>
-            <p class="text-white"><strong>Prezzo: </strong>%PREZZO €</p>
+        <div class="col-md-5" style="padding: 20px;">
+            <div class="card-body">
+                <p class="text-dark"><strong>Nome: </strong>%NOME</p>
+                <p class="text-dark"><strong>Descrizione: </strong>%DESCRIZIONE</p>
+                <p class="text-dark"><strong>Prezzo: </strong>%PREZZO €</p>
+            </div>
         </div>
-        <div class="col" style="margin-top: 20px;">
-            <p class="text-white"><strong>Zona: </strong>%ZONA</p>
-            <p class="text-white"><strong>Stato: </strong>%STATO</p>
-            <div class="form-group">
-                <label for="status" class="text-white"><strong>Modifica stato:</strong></label>
-                <div class="row">
-                    <div class="col-8">
+        <div class="col-md-4" style="padding: 20px;">
+            <div class="card-body">
+                <p class="text-dark"><strong>Zona: </strong>%ZONA</p>
+                <p class="text-dark"><strong>Stato: </strong>%STATO</p>
+                <div class="form-group">
+                    <label for="status" class="text-dark"><strong>Modifica stato:</strong></label>
+                    <div class="input-group">
                         <select class="form-control" id="%INPUTUPD">
                             <option value="disponibile">Disponibile</option>
                             <option value="venduto">Venduto</option>
                             <option value="in_sospeso">In sospeso</option>
                         </select>
-                    </div>
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btnUpdate" id="%UPDATE">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                            </svg>
-                        </button>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary btnUpdate" id="%UPDATE">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 `;
 
 const render = (annunci) => {

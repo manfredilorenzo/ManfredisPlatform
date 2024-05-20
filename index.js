@@ -299,6 +299,7 @@ SELECT id FROM NoteUtente WHERE username = '%USERNAME';
                 } else {
                     insertNewChat(idRoom, idAnnuncio, idAcquirente, idProprietario)
                         .then(() => {
+                            getAllMessages(idRoom);
                             res.json("Chat salvata con successo");
                         })
                         .catch(error => {
@@ -319,7 +320,6 @@ SELECT id FROM NoteUtente WHERE username = '%USERNAME';
                 getAllChat(idKeep)
                     .then((chat) => {
                         console.log("Chat trovate:", chat);
-                        // Invia gli annunci al client
                         res.json({ chat: chat });
                     })
                     .catch((error) => {
