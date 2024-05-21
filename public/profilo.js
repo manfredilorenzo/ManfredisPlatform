@@ -10,7 +10,7 @@ const pubblicaAnnuncio = document.getElementById("pubblicaAnnuncio");
 const divAnnunci = document.getElementById("divAnnunci");
 
 const nuovoUsername = document.getElementById("nuovoUsername");
-const btnSalvaNuovoUsername = document.getElementById ("btnSalvaNuovoUsername");
+const btnSalvaNuovoUsername = document.getElementById("btnSalvaNuovoUsername");
 
 const passwordattuale = document.getElementById("passwordAttuale");
 const nuovaPassword1 = document.getElementById("nuovaPassword1");
@@ -20,143 +20,143 @@ const btnSalvaNuovaPassword = document.getElementById("btnSalvaNuovaPassword");
 
 btnSalvaNuovaPassword.onclick = () => {
   const nuovePass = {
-    "passwordAttuale" : passwordattuale.value,
-    "password1" : nuovaPassword1.value,
-    "password2" : nuovaPassword2.value
+    "passwordAttuale": passwordattuale.value,
+    "password1": nuovaPassword1.value,
+    "password2": nuovaPassword2.value
   }
   sendNewPass(nuovePass).then((result) => {
     if (result.success) {
       alert("Password cambiata con successo.")
       document.getElementById("divCambioPassword").classList.remove("mostra");
       document.getElementById("divCambioPassword").classList.add("nascondi");
-      passwordattuale.value="";
-      nuovaPassword1.value="";
-      nuovaPassword2.value="";
+      passwordattuale.value = "";
+      nuovaPassword1.value = "";
+      nuovaPassword2.value = "";
 
     } else {
-        alert("Cambio username non riscito, riprovare tra poco");
+      alert("Cambio username non riscito, riprovare tra poco");
     }
-});
+  });
 }
 
 btnSalvaNuovoUsername.onclick = () => {
-  const nuovoUsernameVal = {"nuovoUser" : nuovoUsername.value};
+  const nuovoUsernameVal = { "nuovoUser": nuovoUsername.value };
   sendNewUsername(nuovoUsernameVal).then((result) => {
     if (result.success) {
       alert("Username cambiato con successo.")
       document.getElementById("divCambioUsername").classList.remove("mostra");
       document.getElementById("divCambioUsername").classList.add("nascondi");
-      nuovoUsername.value="";
+      nuovoUsername.value = "";
 
     } else {
-        alert("Cambio username non riscito, riprovare tra poco");
+      alert("Cambio username non riscito, riprovare tra poco");
     }
-});
+  });
 
 
 }
 // Gestione pubblicazione dell'annuncio quando si fa clic su "pubblicaAnnuncio"
 pubblicaAnnuncio.onclick = () => {
 
-    caricaFile();
-    console.log("nome annuncio: "+ nomeAnnuncio.value);
-    console.log("descrizione annuncio: " + descrizioneAnnuncio.value);
-    console.log("prezzo annuncio: " + prezzoAnnuncio.value);
-    console.log("zona annuncio: " + zonaAnnuncio.value);
-    console.log("stato annuncio: " + statoAnnuncio.value);
+  caricaFile();
+  console.log("nome annuncio: " + nomeAnnuncio.value);
+  console.log("descrizione annuncio: " + descrizioneAnnuncio.value);
+  console.log("prezzo annuncio: " + prezzoAnnuncio.value);
+  console.log("zona annuncio: " + zonaAnnuncio.value);
+  console.log("stato annuncio: " + statoAnnuncio.value);
 
-    const infoAnnuncio = {
-        "nome": nomeAnnuncio.value,
-        "descrizione": descrizioneAnnuncio.value,
-        "prezzo": prezzoAnnuncio.value,
-        "zona": zonaAnnuncio.value,
-        "stato": statoAnnuncio.value
-    };
-    sendAnnuncio(infoAnnuncio).then((result) => {
-        if (result.result === "ok") {
-          getAnnunci();
+  const infoAnnuncio = {
+    "nome": nomeAnnuncio.value,
+    "descrizione": descrizioneAnnuncio.value,
+    "prezzo": prezzoAnnuncio.value,
+    "zona": zonaAnnuncio.value,
+    "stato": statoAnnuncio.value
+  };
+  sendAnnuncio(infoAnnuncio).then((result) => {
+    if (result.result === "ok") {
+      getAnnunci();
 
-        } else {
-            alert("Pubblicazione non riuscita, riprovare tra poco");
-        }
-    });
-    nomeAnnuncio.value="";
-    descrizioneAnnuncio.value="";
-    prezzoAnnuncio.value="";
-    zonaAnnuncio.value="";
-    statoAnnuncio.value="";
+    } else {
+      alert("Pubblicazione non riuscita, riprovare tra poco");
+    }
+  });
+  nomeAnnuncio.value = "";
+  descrizioneAnnuncio.value = "";
+  prezzoAnnuncio.value = "";
+  zonaAnnuncio.value = "";
+  statoAnnuncio.value = "";
 
 }
-  
-  const sendAnnuncio = (info) => {
-    return new Promise((resolve, reject) => {
-      fetch("/sendAnnuncio", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(info),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          resolve(json);
-        });
-    });
-  };
 
-  const sendNewUsername = (newUser) => {
-    return new Promise((resolve, reject) => {
-      fetch("/changeUsername", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          resolve(json);
-        });
-    });
-  };
+const sendAnnuncio = (info) => {
+  return new Promise((resolve, reject) => {
+    fetch("/sendAnnuncio", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        resolve(json);
+      });
+  });
+};
 
-
-  const sendNewPass = (newPass) => {
-    return new Promise((resolve, reject) => {
-      fetch("/changePassword", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPass),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          resolve(json);
-        });
-    });
-  };
-
-  const updateStatus = (newPass) => {
-    return new Promise((resolve, reject) => {
-      fetch("/changeStatus", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPass),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          resolve(json);
-        });
-    });
-  };
+const sendNewUsername = (newUser) => {
+  return new Promise((resolve, reject) => {
+    fetch("/changeUsername", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        resolve(json);
+      });
+  });
+};
 
 
+const sendNewPass = (newPass) => {
+  return new Promise((resolve, reject) => {
+    fetch("/changePassword", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPass),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        resolve(json);
+      });
+  });
+};
 
-  //template annuncio 
-  const templateAnnuncio = `
+const updateStatus = (newPass) => {
+  return new Promise((resolve, reject) => {
+    fetch("/changeStatus", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPass),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        resolve(json);
+      });
+  });
+};
+
+
+
+//template annuncio 
+const templateAnnuncio = `
   <div class="card mt-5" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden;">
     <div class="row no-gutters">
         <div class="col-md-3">
@@ -213,7 +213,7 @@ const render = (annunci) => {
       .replace("%INPUTUPD", "inputUpdate" + annuncio.id);
 
     try {
-     //provo con jpg
+      //provo con jpg
       annuncioRend = annuncioRend.replace("%PERCORSO", "immaginiCaricate/" + annuncio.nome + ".jpg");
     } catch (errore) {
       //altrimenti provo con png
@@ -230,43 +230,43 @@ const getAnnunci = () => {
   return fetch("/getAnnunciUtente")
     .then((response) => response.json())
     .then((json) => {
-      
+
       console.log("Dati ricevuti:", json.annunci); // stampo in console
       divAnnunci.innerHTML = " ";
       render(json.annunci); // richiamo render con dati
 
       const allBottoniAdd = document.querySelectorAll('.btnUpdate');
 
-    allBottoniAdd.forEach(function (bottone) {
-      bottone.addEventListener('click', function () {
-        let idBottone = bottone.id;
-        console.log("ID del bottone: " + idBottone);
-        const idUpdate = idBottone.replace("update", "");
-        console.log("id definito bottone premuto cambio stato: " + idUpdate);
-        const inputStato = document.getElementById("inputUpdate"+ idUpdate);
-        const info = {
-          "idAnnuncio": idUpdate,
-          "nuovoStatus": inputStato.value 
-        }
-        updateStatus(info);
-        window.location.reload()
-        inputStato.value="";
-        
+      allBottoniAdd.forEach(function (bottone) {
+        bottone.addEventListener('click', function () {
+          let idBottone = bottone.id;
+          console.log("ID del bottone: " + idBottone);
+          const idUpdate = idBottone.replace("update", "");
+          console.log("id definito bottone premuto cambio stato: " + idUpdate);
+          const inputStato = document.getElementById("inputUpdate" + idUpdate);
+          const info = {
+            "idAnnuncio": idUpdate,
+            "nuovoStatus": inputStato.value
+          }
+          updateStatus(info);
+          window.location.reload()
+          inputStato.value = "";
+
+        });
       });
-    });
     })
     .catch((error) => {
       console.error('Errore durante il recupero degli annunci:', error);
     });
 }
 
-window.onload = () =>{
+window.onload = () => {
   getAnnunci();
 }
 
 function caricaFile() {
   const fileInput = document.getElementById('fotoAnnuncio');
-  
+
   //controllo che non sia vuoto
   if (fileInput.files.length === 0) {
     alert('Nessun file selezionato.');
@@ -279,25 +279,144 @@ function caricaFile() {
   //creo oggetto formData (della libreria multer)
   const formData = new FormData();
   formData.append('file', file, nomeAnnuncio.value + ".jpg"); //metto il nome immagine come il nome annuncio, per recupero in render
-  
+
   //invio al servizio
   fetch('/upload', {
     method: 'POST',
     body: formData
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Errore durante il caricamento del file.');
-    }
-    return response.text(); 
-  })
-  .then(data => {
-    console.log('Risposta del server:', data);
-    alert('File caricato con successo.');
-  })
-  .catch(error => {
-    console.error('Errore:', error);
-    alert('Si è verificato un errore durante il caricamento del file.');
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Errore durante il caricamento del file.');
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log('Risposta del server:', data);
+      alert('File caricato con successo.');
+    })
+    .catch(error => {
+      console.error('Errore:', error);
+      alert('Si è verificato un errore durante il caricamento del file.');
+    });
+}
+
+
+//-------------------------------
+const bodyModalMessaggi = document.getElementById("bodyModalMessaggi");
+
+//getMessaggiProprietario
+
+const btnMessaggi = document.getElementById("btnMessaggi");
+
+btnMessaggi.onclick = () => {
+  const infoIdProp = {
+    "idProprietario": sessionStorage.getItem("idAccount")
+  };
+  console.log("id prop da inviare:", infoIdProp);
+
+  getMessaggiProprietario(infoIdProp)
+    .then((result) => {
+      console.log("messaggi ricevuti");
+      if (result.messaggi && result.messaggi.length > 0) {
+        console.log(result.messaggi);
+        renderMess(result.messaggi);
+      } else {
+        console.log("Nessun messaggio trovato");
+        bodyModalMessaggi.innerHTML = "<p>Nessun Messaggio in entrata.</p>"
+      }
+    })
+    .catch((error) => {
+      console.error("Errore nel recupero dei messaggi:", error);
+      // Qui puoi gestire eventuali errori durante la richiesta
+    });
+};
+
+
+const getMessaggiProprietario = (idProp) => {
+  return new Promise((resolve, reject) => {
+    fetch("/getMessaggiProprietario", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(idProp),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        resolve(json);
+      });
+  });
+};
+
+
+const saveMessaggioProprietario = (infoMess) => {
+  return new Promise((resolve, reject) => {
+    fetch("/saveMessProprietario", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(infoMess),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        resolve(json);
+      });
+  });
+};
+//saveMessProprietario
+
+
+const templateMessArrivo = `
+  <div class="message">
+    <div class="text">[%IDMESS]  %TESTO</div>
+    <div class="meta">Data: %DATA, Utente: %IDUTENTE, Chat: %IDROOM</div>
+  </div>
+
+`;
+
+const renderMess = (messaggi) => {
+  messaggi.forEach((messaggio) => {
+    //faccio il replace delle info
+    let messRend = templateMessArrivo
+      .replace("%IDMESS", messaggio.id)
+      .replace("%TESTO", messaggio.testo)
+      .replace("%DATA", messaggio.data)
+      .replace("%IDUTENTE", messaggio.idUtente)
+      .replace("%IDROOM", messaggio.idChat);
+
+    console.log(messRend);
+    //stampo
+    bodyModalMessaggi.innerHTML += messRend;
   });
 }
 
+//inputIdRoom
+//inputMessaggio
+//invioMessaggio
+
+const invioMessaggio = document.getElementById("invioMessaggio");
+
+
+invioMessaggio.onclick = () => {
+
+  const timestamp = new Date().toLocaleString("it-IT", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const infoMess = {
+    "testo": document.getElementById("inputMessaggio").value,
+    "timestamp" : timestamp,
+    "idUtente": sessionStorage.getItem("idAccount"),
+    "idChat": document.getElementById("inputIdRoom").value
+  }
+
+  saveMessaggioProprietario(infoMess);
+  alert("messaggio inviato correttamente all'acquirente");
+
+}

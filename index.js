@@ -328,6 +328,23 @@ SELECT id FROM NoteUtente WHERE username = '%USERNAME';
                     });
     });
 
+    app.post("/getMessaggiProprietario", (req,res) => {
+        const idProp = req.body.idProprietario;
+        console.log("id proprietario ricevuto: " + idProp);
+        getMessaggiProprietario(idProp)
+        .then((messaggi) => {
+            console.log("messaggi trovati", messaggi);
+            console.log("--------------------");
+            res.json({messaggi: messaggi});
+        })
+        .catch((error) => {
+            console.log("Errore nel recupero dei messaggi del proprietario:", error);
+            res.status(500).json({ error: "Errore nel recupero dei messaggi" });
+        });
+
+    });
+
+
 
     const getAllChat = (idAcquirente) => {
 
@@ -466,6 +483,18 @@ SELECT id FROM NoteUtente WHERE username = '%USERNAME';
         return executeQuery(sql);
     }
 
+    const getMessaggiProprietario = (idProprietario) => {
+        const template =`SELECT m.*
+        FROM Messaggi m
+        JOIN Chat c ON m.idChat = c.id
+        WHERE c.idProprietario = '%ID'
+        ORDER BY m.idChat;
+        `;
+        const sql = template.replace("%ID", idProprietario);
+        console.log("query prendi messaggi prop: " + sql);
+        return executeQuery(sql);
+    }
+
     //FUNZIONA
     const changePassword = (idUtente, passAttuale, pass1, pass2) => {
 
@@ -540,7 +569,7 @@ const getAllMessages = (idRoom) => {
         .then(messages => {
            console.log(messages);
            messages.forEach(messaggio => {      
-                let username = usernameKeep;
+                let username = messaggio.idUtente;
                 let message = messaggio.testo;
                 let timestamp = messaggio.data;
                 io.to(idRoom).emit("chat message", { username, message, timestamp }); // Trasmetti l'username e il messaggio
@@ -604,3 +633,17 @@ const salvaMessaggio = (testo, data, idUtente, idChat) => {
     return executeQuery(sql);
 }
 
+
+
+
+app.post("/saveMessProprietario", (req,res) => {
+    const testo = req.body.testo;
+    const timestamp = req.body.timestamp;
+    const idUtente = req.body.idUtente;
+    const idRoom = req.body.idChat;
+
+    console.log (testo +  "-" + timestamp +  "-" + idUtente +  "-" + idRoom);
+
+    salvaMessaggio(testo,timestamp,idUtente,idRoom);
+
+});
