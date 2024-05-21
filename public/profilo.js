@@ -262,6 +262,7 @@ const getAnnunci = () => {
 
 window.onload = () => {
   getAnnunci();
+  document.getElementById("labelNome").innerHTML += sessionStorage.getItem("username");
 }
 
 function caricaFile() {
