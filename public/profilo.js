@@ -372,7 +372,7 @@ const saveMessaggioProprietario = (infoMess) => {
 const templateMessArrivo = `
   <div class="message">
     <div class="text">[%IDMESS]  %TESTO</div>
-    <div class="meta">Data: %DATA, Utente: %IDUTENTE, Chat: %IDROOM</div>
+    <div class="meta">Data: %DATA, Utente: %IDUTENTE, <strong>Chat: %IDROOM </strong></div>
   </div>
 
 `;
